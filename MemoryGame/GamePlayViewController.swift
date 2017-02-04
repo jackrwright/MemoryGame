@@ -16,7 +16,7 @@ class GamePlayViewController: UIViewController {
 	
 	typealias ArrayDimensions = (width: Int, height: Int)
 	
-	// These keys match the Storyboard identifiers
+	// These keys must match the Storyboard identifiers
 	private let gridOptions: Dictionary<String,ArrayDimensions> = [
 		"threeByFour":	(3, 4),
 		"fiveByTwo":	(5, 2),
@@ -30,6 +30,11 @@ class GamePlayViewController: UIViewController {
 			generateCardArray(gridOptions[theGridOption]!)
 		}
 		
+	}
+	
+	// prevent the view controller's contents from rotating when the game is in play
+	override var shouldAutorotate: Bool {
+		return false
 	}
 	
 	private var previousCardTapped: CardView?
@@ -85,13 +90,6 @@ class GamePlayViewController: UIViewController {
 		stackView.spacing = spacing
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(stackView)
-
-//		//autolayout the stack view - pin 30 up 20 left 20 right 30 down
-//		let viewsDictionary = ["stackView":stackView]
-//		let stackView_H = NSLayoutConstraint.constraints(withVisualFormat: "H:|-20-[stackView]-20-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-//		let stackView_V = NSLayoutConstraint.constraints(withVisualFormat: "V:|-30-[stackView]-30-|", options: NSLayoutFormatOptions(rawValue: 0), metrics: nil, views: viewsDictionary)
-//		view.addConstraints(stackView_H)
-//		view.addConstraints(stackView_V)
 
 	}
 	

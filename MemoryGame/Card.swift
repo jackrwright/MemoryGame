@@ -8,7 +8,7 @@
 
 import Foundation
 
-// These are the image file names that correspond to the CardType
+// These are the image file names that correspond to the CardType enum values
 private var faceImageName: Dictionary<CardType,String> = [
 	.cow:		"Cow",
 	.hen:		"Hen",
