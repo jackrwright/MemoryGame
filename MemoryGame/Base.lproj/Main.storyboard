@@ -1,26 +1,145 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11134" systemVersion="15F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+    <device id="retina5_5" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11106"/>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Lobby-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Lobby" id="BYZ-38-t0r" customClass="LobbyViewController" customModule="MemoryGame" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="tvU-uU-yVj">
+                                <rect key="frame" x="41" y="28" width="332" height="680"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Memory Game" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="ok6-Gh-e81">
+                                        <rect key="frame" x="0.0" y="0.0" width="332" height="50"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="z48-GJ-NZJ"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="48"/>
+                                        <color key="textColor" red="0.50196081400000003" green="0.0" blue="0.25098040700000002" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="z7x-LU-0NP">
+                                        <rect key="frame" x="0.0" y="70" width="332" height="610"/>
+                                        <subviews>
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bx3-SA-ZPB">
+                                                <rect key="frame" x="0.0" y="0.0" width="332" height="137.66666666666666"/>
+                                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
+                                                <state key="normal" title="3 x 4"/>
+                                                <connections>
+                                                    <segue destination="ElA-ca-xxu" kind="show" identifier="threeByFour" id="7ws-pP-nOC"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jn9-iI-Nar">
+                                                <rect key="frame" x="0.0" y="157.66666666666663" width="332" height="137.33333333333337"/>
+                                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
+                                                <state key="normal" title="5 x 2"/>
+                                                <connections>
+                                                    <segue destination="ElA-ca-xxu" kind="showDetail" identifier="fiveByTwo" action="showViewController:sender:" id="iDa-TB-yVg"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOo-kq-wk0">
+                                                <rect key="frame" x="0.0" y="315" width="332" height="137.66666666666663"/>
+                                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
+                                                <state key="normal" title="4 x 4"/>
+                                                <connections>
+                                                    <segue destination="ElA-ca-xxu" kind="show" identifier="fourByFour" id="YnU-UP-KNh"/>
+                                                </connections>
+                                            </button>
+                                            <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdv-nU-Cdw">
+                                                <rect key="frame" x="0.0" y="472.66666666666657" width="332" height="137.33333333333343"/>
+                                                <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
+                                                <state key="normal" title="4 x 5"/>
+                                                <connections>
+                                                    <segue destination="ElA-ca-xxu" kind="show" identifier="fourByFive" id="PhJ-8d-f98"/>
+                                                </connections>
+                                            </button>
+                                        </subviews>
+                                    </stackView>
+                                </subviews>
+                            </stackView>
+                        </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="tvU-uU-yVj" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="21" id="IuI-fW-OdG"/>
+                            <constraint firstItem="tvU-uU-yVj" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" id="dCK-Sx-FNq"/>
+                            <constraint firstItem="tvU-uU-yVj" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="knJ-JA-FNL"/>
+                            <constraint firstItem="tvU-uU-yVj" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="y9I-7J-002"/>
+                        </constraints>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="142" y="72"/>
+        </scene>
+        <!--GamePlay-->
+        <scene sceneID="vUb-65-aR0">
+            <objects>
+                <viewController title="GamePlay" id="ElA-ca-xxu" customClass="GamePlayViewController" customModule="MemoryGame" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="Scw-q3-D5h"/>
+                        <viewControllerLayoutGuide type="bottom" id="fxp-8o-Uhu"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="YS3-Fy-UcT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IGv-A5-6K1">
+                                <rect key="frame" x="20" y="90" width="374" height="654"/>
+                            </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVS-gD-H0K" userLabel="Back Button">
+                                <rect key="frame" x="20" y="0.0" width="96" height="82"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="96" id="9Cm-XG-rct"/>
+                                    <constraint firstAttribute="height" constant="82" id="gE2-8e-CSr"/>
+                                    <constraint firstAttribute="width" secondItem="tVS-gD-H0K" secondAttribute="height" multiplier="48:41" id="gaU-3y-bJG"/>
+                                </constraints>
+                                <state key="normal" title="Button" image="BackButton"/>
+                                <connections>
+                                    <segue destination="XOd-vA-6at" kind="unwind" unwindAction="myUnwindActionWithUnwindSegue:" id="EeG-m3-5Mb"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="IGv-A5-6K1" firstAttribute="top" secondItem="tVS-gD-H0K" secondAttribute="bottom" constant="8" symbolic="YES" id="Bdn-p0-RIe"/>
+                            <constraint firstItem="IGv-A5-6K1" firstAttribute="leading" secondItem="YS3-Fy-UcT" secondAttribute="leading" constant="20" symbolic="YES" id="Gs9-qh-AkG"/>
+                            <constraint firstItem="tVS-gD-H0K" firstAttribute="top" secondItem="YS3-Fy-UcT" secondAttribute="top" id="Mky-7N-EvS"/>
+                            <constraint firstItem="IGv-A5-6K1" firstAttribute="bottom" secondItem="fxp-8o-Uhu" secondAttribute="top" constant="8" symbolic="YES" id="Y6G-An-UDB"/>
+                            <constraint firstAttribute="trailing" secondItem="IGv-A5-6K1" secondAttribute="trailing" constant="20" symbolic="YES" id="baK-Ev-2Xi"/>
+                            <constraint firstItem="tVS-gD-H0K" firstAttribute="leading" secondItem="YS3-Fy-UcT" secondAttribute="leadingMargin" id="cbL-1U-Jzc"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="stackView" destination="IGv-A5-6K1" id="dkt-au-5WG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="sTH-dx-8Oh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <exit id="XOd-vA-6at" userLabel="Exit" sceneMemberID="exit"/>
+            </objects>
+            <point key="canvasLocation" x="1130.4347826086957" y="71.739130434782609"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="BackButton" width="95" height="82"/>
+    </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="YnU-UP-KNh"/>
+    </inferredMetricsTieBreakers>
 </document>

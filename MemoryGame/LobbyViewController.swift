@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  LobbyViewController.swift
 //  MemoryGame
 //
 //  Created by Jack Wright on 2/3/17.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class LobbyViewController: UIViewController {
 
 	override func viewDidLoad() {
 		super.viewDidLoad()
@@ -19,7 +19,21 @@ class ViewController: UIViewController {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
+	
+	// MARK: - Navigation
 
+	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+		if let gameVC = segue.destination as? GamePlayViewController {
+			if let identifier = segue.identifier {
+				gameVC.gridOption = identifier
+			}
+		}
+	}
 
+	@IBAction func myUnwindAction(unwindSegue: UIStoryboardSegue)
+	{
+		
+	}
 }
+
 
