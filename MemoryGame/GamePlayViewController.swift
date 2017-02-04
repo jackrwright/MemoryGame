@@ -65,18 +65,21 @@ class GamePlayViewController: UIViewController {
 	
 	private func generateCardArray(_ dimensions: ArrayDimensions)
 	{
-		// Generate an array of the correct number of card pairs
-		var cardArray = [CardType]()
-		let numCardPairs = dimensions.width * dimensions.height / 2
-		for _ in 0..<numCardPairs {
-			let randomCardType = CardType.random()
-			// append a pair of these
-			cardArray.append(randomCardType)
-			cardArray.append(randomCardType)
+		let numberOfCards = dimensions.width * dimensions.height
+		
+		// create a deck of card pairs
+		var cardArray = CardType.createDeck(size: numberOfCards)
+		
+		// generate a random array of card type pairs
+		var cardTypeArray = [CardType]()
+		for _ in 0..<numberOfCards {
+			let index = Int.random(cardArray.count)
+			cardTypeArray.append(cardArray[index].type)
+			cardArray.remove(at: index)
 		}
 		
+		// Generate the rows of cards as horizontal UIStackViews...
 		
-		// Generate the rows of cards as horizontal UIStackViews
 		let spacing: CGFloat = 10.0
 		var horizontalStackViews = [UIStackView]()
 		
@@ -89,18 +92,16 @@ class GamePlayViewController: UIViewController {
 		}
 		
 		// for each row
-		for _ in 0..<height {
+		for row in 0..<height {
 			var rowCardArray = [UIButton]()
 			// for each column
-			for _ in 0..<width {
-				let index = Int.random(cardArray.count)
-				let randomCard = cardArray[index]
-				let card = CardView(randomCard)
+			for col in 0..<width {
+				let index = row * width + col
+				let card = CardView(cardTypeArray[index])
+//				print("Adding CardView for '\(cardTypeArray[index])'")
 				// hook up the target
 				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
 				rowCardArray += [card]
-				// remove the selected card from the array
-				cardArray.remove(at: index)
 			}
 			let rowStackView = UIStackView(arrangedSubviews: rowCardArray)
 			rowStackView.axis = .horizontal
