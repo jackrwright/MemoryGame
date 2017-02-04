@@ -12,8 +12,6 @@ class GamePlayViewController: UIViewController {
 	
 	var gridOption: String?
 	
-	var previousCardTapped: CardView?
-	
 	@IBOutlet weak var stackView: UIStackView!
 	
 	typealias ArrayDimensions = (width: Int, height: Int)
@@ -26,12 +24,17 @@ class GamePlayViewController: UIViewController {
 		"fourByFive":	(4, 5)
 	]
 	
-	private let cardImages: Dictionary<CardType,String> = [
-		.cow: "Cow",
-		.hen: "Hen",
-	]
+	override func viewDidLoad() {
+		// Construct and display the grid of cards
+		if let theGridOption = gridOption {
+			generateCardArray(gridOptions[theGridOption]!)
+		}
+		
+	}
 	
-	func generateCardArray(_ dimensions: ArrayDimensions)
+	private var previousCardTapped: CardView?
+	
+	private func generateCardArray(_ dimensions: ArrayDimensions)
 	{
 		// Generate an array of the correct number of card pairs
 		var cardArray = [CardType]()
@@ -92,35 +95,39 @@ class GamePlayViewController: UIViewController {
 
 	}
 	
+	var isResetingCards = false
+	
+	// This function handles the card tap logic
 	@objc fileprivate func cardWasTapped(_ card: CardView)
 	{
+		if isResetingCards {
+			return
+		}
+		
 		// change the card's image to it's face
 		card.showFace()
-		if let previousCard = previousCardTapped {
-			if card.myType == previousCard.myType {
+		if previousCardTapped != nil {
+			if card.myType == previousCardTapped!.myType {
 				// a match, disable user interaction with both cards
 				card.isUserInteractionEnabled = false
-				previousCard.isUserInteractionEnabled = false
+				previousCardTapped!.isUserInteractionEnabled = false
 				previousCardTapped = nil
 			} else {
 				// no match, turn the cards over after 1 second
+				
+				// Prevent further taps until the cards have flipped back over
+				isResetingCards = true
+				
 				Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (timer) in
 					card.showBack()
-					previousCard.showBack()
+					self.previousCardTapped!.showBack()
+					self.isResetingCards = false
+					self.previousCardTapped = nil
 				})
-				previousCardTapped = nil
 			}
 		} else {
 			previousCardTapped = card
 		}
 	}
 	
-	override func viewDidLoad() {
-		// Construct the grid of cards
-		if let theGridOption = gridOption {
-			generateCardArray(gridOptions[theGridOption]!)
-		}
-		
-	}
-
 }
