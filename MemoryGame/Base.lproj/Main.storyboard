@@ -100,11 +100,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="IGv-A5-6K1">
-                                <rect key="frame" x="20" y="90" width="374" height="654"/>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="IGv-A5-6K1">
+                                <rect key="frame" x="20" y="110" width="374" height="606"/>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVS-gD-H0K" userLabel="Back Button">
-                                <rect key="frame" x="20" y="0.0" width="96" height="82"/>
+                                <rect key="frame" x="20" y="20" width="96" height="82"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="96" id="9Cm-XG-rct"/>
                                     <constraint firstAttribute="height" constant="82" id="gE2-8e-CSr"/>
@@ -120,8 +120,8 @@
                         <constraints>
                             <constraint firstItem="IGv-A5-6K1" firstAttribute="top" secondItem="tVS-gD-H0K" secondAttribute="bottom" constant="8" symbolic="YES" id="Bdn-p0-RIe"/>
                             <constraint firstItem="IGv-A5-6K1" firstAttribute="leading" secondItem="YS3-Fy-UcT" secondAttribute="leading" constant="20" symbolic="YES" id="Gs9-qh-AkG"/>
-                            <constraint firstItem="tVS-gD-H0K" firstAttribute="top" secondItem="YS3-Fy-UcT" secondAttribute="top" id="Mky-7N-EvS"/>
-                            <constraint firstItem="IGv-A5-6K1" firstAttribute="bottom" secondItem="fxp-8o-Uhu" secondAttribute="top" constant="8" symbolic="YES" id="Y6G-An-UDB"/>
+                            <constraint firstItem="tVS-gD-H0K" firstAttribute="top" secondItem="YS3-Fy-UcT" secondAttribute="top" constant="20" symbolic="YES" id="Mky-7N-EvS"/>
+                            <constraint firstItem="IGv-A5-6K1" firstAttribute="bottom" secondItem="fxp-8o-Uhu" secondAttribute="top" constant="-20" id="Y6G-An-UDB"/>
                             <constraint firstAttribute="trailing" secondItem="IGv-A5-6K1" secondAttribute="trailing" constant="20" symbolic="YES" id="baK-Ev-2Xi"/>
                             <constraint firstItem="tVS-gD-H0K" firstAttribute="leading" secondItem="YS3-Fy-UcT" secondAttribute="leadingMargin" id="cbL-1U-Jzc"/>
                         </constraints>

@@ -12,6 +12,8 @@ class GamePlayViewController: UIViewController {
 	
 	var gridOption: String?
 	
+	var previousCardTapped: CardView?
+	
 	@IBOutlet weak var stackView: UIStackView!
 	
 	typealias ArrayDimensions = (width: Int, height: Int)
@@ -53,6 +55,8 @@ class GamePlayViewController: UIViewController {
 				let index = Int.random(cardArray.count)
 				let randomCard = cardArray[index]
 				let card = CardView(randomCard)
+				// hook up the target
+				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
 				rowCardArray += [card]
 				// remove the selected card from the array
 				cardArray.remove(at: index)
@@ -86,6 +90,29 @@ class GamePlayViewController: UIViewController {
 //		view.addConstraints(stackView_H)
 //		view.addConstraints(stackView_V)
 
+	}
+	
+	@objc fileprivate func cardWasTapped(_ card: CardView)
+	{
+		// change the card's image to it's face
+		card.showFace()
+		if let previousCard = previousCardTapped {
+			if card.myType == previousCard.myType {
+				// a match, disable user interaction with both cards
+				card.isUserInteractionEnabled = false
+				previousCard.isUserInteractionEnabled = false
+				previousCardTapped = nil
+			} else {
+				// no match, turn the cards over after 1 second
+				Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (timer) in
+					card.showBack()
+					previousCard.showBack()
+				})
+				previousCardTapped = nil
+			}
+		} else {
+			previousCardTapped = card
+		}
 	}
 	
 	override func viewDidLoad() {
