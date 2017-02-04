@@ -14,17 +14,8 @@ class GamePlayViewController: UIViewController {
 	
 	@IBOutlet weak var stackView: UIStackView!
 	
-	typealias ArrayDimensions = (width: Int, height: Int)
-	
-	// These keys must match the Storyboard identifiers
-	private let gridOptions: Dictionary<String,ArrayDimensions> = [
-		"threeByFour":	(3, 4),
-		"fiveByTwo":	(5, 2),
-		"fourByFour":	(4, 4),
-		"fourByFive":	(4, 5)
-	]
-	
 	override func viewDidLoad() {
+		
 		// Construct and display the grid of cards
 		if let theGridOption = gridOption {
 			generateCardArray(gridOptions[theGridOption]!)
@@ -37,7 +28,40 @@ class GamePlayViewController: UIViewController {
 		return false
 	}
 	
+	// MARK: - Private Implementation
+	
+	// Time to wait before turning over unmatched cards in seconds
+	private let unMatchedCardsTimer = 1.0
+	
+	private typealias ArrayDimensions = (width: Int, height: Int)
+	
+	// These keys must match the Storyboard identifiers
+	private let gridOptions: Dictionary<String,ArrayDimensions> = [
+		"threeByFour":	(3, 4),
+		"fiveByTwo":	(5, 2),
+		"fourByFour":	(4, 4),
+		"fourByFive":	(4, 5)
+	]
+	
+	// keep track of the card previously tapped
 	private var previousCardTapped: CardView?
+	
+	// Determine if we need to flip the grid dimensions to best fit the device orientation
+	private func needToFlipDimensions(width: Int, height: Int) -> Bool
+	{
+		// We can't use traits because there are devices that are compact in both orientations
+		let screenFrame = UIScreen.main.bounds
+		
+		if screenFrame.width > screenFrame.height && height > width {
+			return true
+		}
+		
+		if screenFrame.height > screenFrame.width && width > height {
+			return true
+		}
+		
+		return false
+	}
 	
 	private func generateCardArray(_ dimensions: ArrayDimensions)
 	{
@@ -55,11 +79,20 @@ class GamePlayViewController: UIViewController {
 		// Generate the rows of cards as horizontal UIStackViews
 		let spacing: CGFloat = 10.0
 		var horizontalStackViews = [UIStackView]()
+		
+		// See if we need to flip the grid dimensions to best fit the device orientation
+		var width = dimensions.width
+		var height = dimensions.height
+		if needToFlipDimensions(width: width, height: height) {
+			width = dimensions.height
+			height = dimensions.width
+		}
+		
 		// for each row
-		for _ in 0..<dimensions.height {
+		for _ in 0..<height {
 			var rowCardArray = [UIButton]()
 			// for each column
-			for _ in 0..<dimensions.width {
+			for _ in 0..<width {
 				let index = Int.random(cardArray.count)
 				let randomCard = cardArray[index]
 				let card = CardView(randomCard)
@@ -93,11 +126,12 @@ class GamePlayViewController: UIViewController {
 
 	}
 	
-	var isResetingCards = false
+	private var isResetingCards = false
 	
 	// This function handles the card tap logic
 	@objc fileprivate func cardWasTapped(_ card: CardView)
 	{
+		// Don't respond to taps during the waiting period for turning unmatched cards back over
 		if isResetingCards {
 			return
 		}
@@ -116,7 +150,7 @@ class GamePlayViewController: UIViewController {
 				// Prevent further taps until the cards have flipped back over
 				isResetingCards = true
 				
-				Timer.scheduledTimer(withTimeInterval: 1.0, repeats: false, block: { (timer) in
+				Timer.scheduledTimer(withTimeInterval: unMatchedCardsTimer, repeats: false, block: { (timer) in
 					card.showBack()
 					self.previousCardTapped!.showBack()
 					self.isResetingCards = false
