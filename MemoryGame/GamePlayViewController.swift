@@ -28,23 +28,23 @@ class GamePlayViewController: UIViewController {
 		return false
 	}
 	
+	// This is a fun game, don't bother me with the clock
+	override var prefersStatusBarHidden: Bool {
+		return true
+	}
+
 	// MARK: - Private Implementation
-	
-	// Time to wait before turning over unmatched cards in seconds
-	private let unMatchedCardsTimer = 1.0
 	
 	private typealias ArrayDimensions = (width: Int, height: Int)
 	
-	// These keys must match the Storyboard identifiers
+	// These keys must match the Storyboard segue identifiers for the buttons.
+	// Update this is another grid option is desired.
 	private let gridOptions: Dictionary<String,ArrayDimensions> = [
 		"threeByFour":	(3, 4),
 		"fiveByTwo":	(5, 2),
 		"fourByFour":	(4, 4),
 		"fourByFive":	(4, 5)
 	]
-	
-	// keep track of the card previously tapped
-	private var previousCardTapped: CardView?
 	
 	// Determine if we need to flip the grid dimensions to best fit the device orientation
 	private func needToFlipDimensions(width: Int, height: Int) -> Bool
@@ -99,7 +99,7 @@ class GamePlayViewController: UIViewController {
 				let index = row * width + col
 				let card = CardView(cardTypeArray[index])
 //				print("Adding CardView for '\(cardTypeArray[index])'")
-				// hook up the target
+				// hook up the button's target so the cardWasTapped function is called
 				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
 				rowCardArray += [card]
 			}
@@ -127,9 +127,20 @@ class GamePlayViewController: UIViewController {
 
 	}
 	
+	// MARK: - Card Tap Logic
+	
+	// keep track of the card previously tapped
+	private var previousCardTapped: CardView?
+	
+	// When true, the timer for turning a pair of unmatched cards is running
 	private var isResetingCards = false
 	
-	// This function handles the card tap logic
+	// Time to wait before turning over unmatched cards in seconds
+	private let unMatchedCardsTimer = 1.0
+	
+	// This function handles the card tap logic.
+	// The 'card' argument is the CardView object as the sender.
+	// We know which card type was tapped because it's an instance variable in the CardView object.
 	@objc fileprivate func cardWasTapped(_ card: CardView)
 	{
 		// Don't respond to taps during the waiting period for turning unmatched cards back over
@@ -151,6 +162,7 @@ class GamePlayViewController: UIViewController {
 				// Prevent further taps until the cards have flipped back over
 				isResetingCards = true
 				
+				// Start a timer to delay turning the cards over
 				Timer.scheduledTimer(withTimeInterval: unMatchedCardsTimer, repeats: false, block: { (timer) in
 					card.showBack()
 					self.previousCardTapped!.showBack()

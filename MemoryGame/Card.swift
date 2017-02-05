@@ -8,7 +8,8 @@
 
 import Foundation
 
-// These are the image file names that correspond to the CardType enum values
+// These are the image file names that correspond to the CardType enum values.
+// Update this when a new card face image is added.
 private var faceImageName: Dictionary<CardType,String> = [
 	.cow:		"Cow",
 	.hen:		"Hen",
@@ -21,6 +22,7 @@ private var faceImageName: Dictionary<CardType,String> = [
 ]
 
 enum CardType: Int {
+	// Update this when new a new card face is added
 	case cow, hen, horse, pig, bat, cat, spider, ghostDog
 	
 	// find the maximum enum value

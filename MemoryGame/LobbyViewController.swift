@@ -26,6 +26,12 @@ class LobbyViewController: UIViewController {
 	{
 		
 	}
+	
+	// This is a fun game, don't bother me with the clock
+	override var prefersStatusBarHidden: Bool {
+		return true
+	}
+	
 }
 
 

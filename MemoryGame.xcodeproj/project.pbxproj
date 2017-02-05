@@ -30,6 +30,7 @@
 		21A8C7A31E44EAD8008F923F /* CardView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
 		21A8C7A51E450B19008F923F /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		21A8C7A71E4514F6008F923F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
+		21A8C7A91E469046008F923F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,6 +63,7 @@
 		21A8C78D1E44C767008F923F /* MemoryGame */ = {
 			isa = PBXGroup;
 			children = (
+				21A8C7A91E469046008F923F /* README.md */,
 				21A8C78E1E44C767008F923F /* AppDelegate.swift */,
 				21A8C7901E44C767008F923F /* LobbyViewController.swift */,
 				21A8C7A11E44D3CC008F923F /* GamePlayViewController.swift */,
