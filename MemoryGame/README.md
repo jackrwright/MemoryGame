@@ -22,4 +22,4 @@ When the user chooses a grid option in the Lobby, the LobbyViewController passes
  ## Observations/ Comments
  * The instructions said there would be 10 images for the card faces, but I could only find 8 unique images, so some faces are duplicated in the game.
  * Some of the images had no border, so I added a shadow effect to make the card shapes more distinct.
- * I could think of some animations that would be appropriate for the game (dealing the cards onto the board, card flipping, fancier segues, etc), but the instructions said they were "not included in the prototype", so in the interest of time I didn't add them. But, I certainly could if requested.
+ * Even though not required, a I added a few animations.
