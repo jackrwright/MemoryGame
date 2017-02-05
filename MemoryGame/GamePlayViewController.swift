@@ -23,11 +23,6 @@ class GamePlayViewController: UIViewController {
 		
 	}
 	
-	// prevent the view controller's contents from rotating when the game is in play
-	override var shouldAutorotate: Bool {
-		return false
-	}
-	
 	// This is a fun game, don't bother me with the clock
 	override var prefersStatusBarHidden: Bool {
 		return true
@@ -38,7 +33,7 @@ class GamePlayViewController: UIViewController {
 	private typealias ArrayDimensions = (width: Int, height: Int)
 	
 	// These keys must match the Storyboard segue identifiers for the buttons.
-	// Update this is another grid option is desired.
+	// Update this if another grid option is desired.
 	private let gridOptions: Dictionary<String,ArrayDimensions> = [
 		"threeByFour":	(3, 4),
 		"fiveByTwo":	(5, 2),
@@ -98,6 +93,8 @@ class GamePlayViewController: UIViewController {
 			for col in 0..<width {
 				let index = row * width + col
 				let card = CardView(cardTypeArray[index])
+				// start with the card hidden. It will be revealed when the stackview lays out its subviews
+				card.isHidden = true
 //				print("Adding CardView for '\(cardTypeArray[index])'")
 				// hook up the button's target so the cardWasTapped function is called
 				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
@@ -124,7 +121,7 @@ class GamePlayViewController: UIViewController {
 		stackView.spacing = spacing
 		stackView.translatesAutoresizingMaskIntoConstraints = false
 		view.addSubview(stackView)
-
+		
 	}
 	
 	// MARK: - Card Tap Logic

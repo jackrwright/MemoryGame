@@ -13,10 +13,12 @@ class LobbyViewController: UIViewController {
 	// MARK: - Navigation
 
 	override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-		if let gameVC = segue.destination as? GamePlayViewController {
-			if let identifier = segue.identifier {
-				// Pass the storyboard ID to the gameVC so it knows what the grid choice was
-				gameVC.gridOption = identifier
+		if let navVC = segue.destination as? UINavigationController {
+			if let gameVC = navVC.topViewController as? GamePlayViewController {
+				if let identifier = segue.identifier {
+					// Pass the storyboard ID to the gameVC so it knows what the grid choice was
+					gameVC.gridOption = identifier
+				}
 			}
 		}
 	}

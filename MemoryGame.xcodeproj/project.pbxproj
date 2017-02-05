@@ -16,6 +16,8 @@
 		21A8C7A41E44EAD8008F923F /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C7A31E44EAD8008F923F /* CardView.swift */; };
 		21A8C7A61E450B19008F923F /* Card.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C7A51E450B19008F923F /* Card.swift */; };
 		21A8C7A81E4514F6008F923F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C7A71E4514F6008F923F /* Extensions.swift */; };
+		21A8C7AB1E4768BF008F923F /* MyStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C7AA1E4768BF008F923F /* MyStackView.swift */; };
+		21A8C7AD1E477E2D008F923F /* NonRotatingNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C7AC1E477E2D008F923F /* NonRotatingNavController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +33,8 @@
 		21A8C7A51E450B19008F923F /* Card.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Card.swift; sourceTree = "<group>"; };
 		21A8C7A71E4514F6008F923F /* Extensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		21A8C7A91E469046008F923F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		21A8C7AA1E4768BF008F923F /* MyStackView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyStackView.swift; sourceTree = "<group>"; };
+		21A8C7AC1E477E2D008F923F /* NonRotatingNavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonRotatingNavController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +73,8 @@
 				21A8C7A11E44D3CC008F923F /* GamePlayViewController.swift */,
 				21A8C7A31E44EAD8008F923F /* CardView.swift */,
 				21A8C7A51E450B19008F923F /* Card.swift */,
+				21A8C7AA1E4768BF008F923F /* MyStackView.swift */,
+				21A8C7AC1E477E2D008F923F /* NonRotatingNavController.swift */,
 				21A8C7A71E4514F6008F923F /* Extensions.swift */,
 				21A8C7921E44C767008F923F /* Main.storyboard */,
 				21A8C7A01E44C78C008F923F /* Support Files */,
@@ -160,9 +166,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				21A8C7911E44C767008F923F /* LobbyViewController.swift in Sources */,
+				21A8C7AB1E4768BF008F923F /* MyStackView.swift in Sources */,
 				21A8C7A81E4514F6008F923F /* Extensions.swift in Sources */,
 				21A8C7A21E44D3CC008F923F /* GamePlayViewController.swift in Sources */,
 				21A8C7A61E450B19008F923F /* Card.swift in Sources */,
+				21A8C7AD1E477E2D008F923F /* NonRotatingNavController.swift in Sources */,
 				21A8C7A41E44EAD8008F923F /* CardView.swift in Sources */,
 				21A8C78F1E44C767008F923F /* AppDelegate.swift in Sources */,
 			);
@@ -328,6 +336,7 @@
 				21A8C79F1E44C767008F923F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
