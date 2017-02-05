@@ -34,7 +34,7 @@ class CardView: UIButton {
 		self.layer.shadowRadius = 5.0;
 		self.clipsToBounds = false;
 		self.layer.shouldRasterize = true;
-
+		
 		// start by showing the card back
 		showBack()
 	}
@@ -48,12 +48,17 @@ class CardView: UIButton {
 	func showFace()
 	{
 		if let imageName = CardType.faceImageForType(myType) {
-			setImage(UIImage.init(named: imageName), for: .normal)
+			
+			UIView.transition(with: self.imageView!, duration: 0.25, options: .transitionFlipFromRight, animations: {
+				self.setImage(UIImage.init(named: imageName), for: .normal)
+			}, completion: nil)
 		}
 	}
 	
 	func showBack()
 	{
-		setImage(UIImage.init(named: "CardBack"), for: .normal)
+		UIView.transition(with: self.imageView!, duration: 0.25, options: .transitionFlipFromLeft, animations: {
+			self.setImage(UIImage.init(named: "CardBack"), for: .normal)
+		}, completion: nil)
 	}
 }

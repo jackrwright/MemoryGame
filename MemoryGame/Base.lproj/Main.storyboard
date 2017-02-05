@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1217" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="RKV-Fu-JOh">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="tvU-uU-yVj">
-                                <rect key="frame" x="41" y="28" width="332" height="680"/>
+                                <rect key="frame" x="41" y="72" width="332" height="592"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Memory Game" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="ok6-Gh-e81">
                                         <rect key="frame" x="0.0" y="0.0" width="332" height="50"/>
@@ -36,10 +36,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="z7x-LU-0NP">
-                                        <rect key="frame" x="0.0" y="70" width="332" height="610"/>
+                                        <rect key="frame" x="0.0" y="70" width="332" height="522"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bx3-SA-ZPB">
-                                                <rect key="frame" x="0.0" y="0.0" width="332" height="137.66666666666666"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="332" height="115.66666666666669"/>
                                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
                                                 <state key="normal" title="3 x 4"/>
                                                 <connections>
@@ -47,7 +47,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jn9-iI-Nar">
-                                                <rect key="frame" x="0.0" y="157.66666666666663" width="332" height="137.33333333333337"/>
+                                                <rect key="frame" x="0.0" y="135.66666666666669" width="332" height="115.33333333333331"/>
                                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
                                                 <state key="normal" title="5 x 2"/>
                                                 <connections>
@@ -55,7 +55,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOo-kq-wk0">
-                                                <rect key="frame" x="0.0" y="315" width="332" height="137.66666666666663"/>
+                                                <rect key="frame" x="0.0" y="271" width="332" height="115.66666666666663"/>
                                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
                                                 <state key="normal" title="4 x 4"/>
                                                 <connections>
@@ -63,7 +63,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdv-nU-Cdw">
-                                                <rect key="frame" x="0.0" y="472.66666666666657" width="332" height="137.33333333333343"/>
+                                                <rect key="frame" x="0.0" y="406.66666666666663" width="332" height="115.33333333333337"/>
                                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
                                                 <state key="normal" title="4 x 5"/>
                                                 <connections>
@@ -83,10 +83,11 @@
                             <constraint firstItem="tvU-uU-yVj" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" constant="8" symbolic="YES" id="y9I-7J-002"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="xeu-ee-D45"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="142" y="72"/>
+            <point key="canvasLocation" x="1047.8260869565217" y="71.739130434782609"/>
         </scene>
         <!--GamePlay-->
         <scene sceneID="vUb-65-aR0">
@@ -133,13 +134,31 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sTH-dx-8Oh" userLabel="First Responder" sceneMemberID="firstResponder"/>
                 <exit id="XOd-vA-6at" userLabel="Exit" sceneMemberID="exit"/>
             </objects>
-            <point key="canvasLocation" x="1130.4347826086957" y="71.739130434782609"/>
+            <point key="canvasLocation" x="2037.68115942029" y="71.739130434782609"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="bIg-WE-lAD">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" navigationBarHidden="YES" id="RKV-Fu-JOh" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="dbW-N3-Zr6">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="qOL-Jw-AGc"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="0gi-06-ILz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140.57971014492756" y="71.739130434782609"/>
         </scene>
     </scenes>
     <resources>
         <image name="BackButton" width="95" height="82"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="YnU-UP-KNh"/>
+        <segue reference="7ws-pP-nOC"/>
     </inferredMetricsTieBreakers>
 </document>

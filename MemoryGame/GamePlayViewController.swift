@@ -148,6 +148,11 @@ class GamePlayViewController: UIViewController {
 			return
 		}
 		
+		// Ignore the tap if it is the same card
+		if (card == previousCardTapped) {
+			return
+		}
+		
 		// change the card's image to it's face
 		card.showFace()
 		if previousCardTapped != nil {
