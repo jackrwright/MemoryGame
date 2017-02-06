@@ -24,7 +24,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillProportionally" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="tvU-uU-yVj">
-                                <rect key="frame" x="41" y="72" width="332" height="592"/>
+                                <rect key="frame" x="41" y="28" width="332" height="680"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="1000" verticalCompressionResistancePriority="1000" text="Memory Game" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="18" translatesAutoresizingMaskIntoConstraints="NO" id="ok6-Gh-e81">
                                         <rect key="frame" x="0.0" y="0.0" width="332" height="50"/>
@@ -36,10 +36,10 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="20" translatesAutoresizingMaskIntoConstraints="NO" id="z7x-LU-0NP">
-                                        <rect key="frame" x="0.0" y="70" width="332" height="522"/>
+                                        <rect key="frame" x="0.0" y="70" width="332" height="610"/>
                                         <subviews>
                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bx3-SA-ZPB">
-                                                <rect key="frame" x="0.0" y="0.0" width="332" height="115.66666666666669"/>
+                                                <rect key="frame" x="0.0" y="0.0" width="332" height="137.66666666666666"/>
                                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
                                                 <state key="normal" title="3 x 4"/>
                                                 <connections>
@@ -47,7 +47,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jn9-iI-Nar">
-                                                <rect key="frame" x="0.0" y="135.66666666666669" width="332" height="115.33333333333331"/>
+                                                <rect key="frame" x="0.0" y="157.66666666666663" width="332" height="137.33333333333337"/>
                                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
                                                 <state key="normal" title="5 x 2"/>
                                                 <connections>
@@ -55,7 +55,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="LOo-kq-wk0">
-                                                <rect key="frame" x="0.0" y="271" width="332" height="115.66666666666663"/>
+                                                <rect key="frame" x="0.0" y="315" width="332" height="137.66666666666663"/>
                                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
                                                 <state key="normal" title="4 x 4"/>
                                                 <connections>
@@ -63,7 +63,7 @@
                                                 </connections>
                                             </button>
                                             <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bdv-nU-Cdw">
-                                                <rect key="frame" x="0.0" y="406.66666666666663" width="332" height="115.33333333333337"/>
+                                                <rect key="frame" x="0.0" y="472.66666666666657" width="332" height="137.33333333333343"/>
                                                 <fontDescription key="fontDescription" name="Chalkduster" family="Chalkduster" pointSize="36"/>
                                                 <state key="normal" title="4 x 5"/>
                                                 <connections>
@@ -101,7 +101,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="IGv-A5-6K1" customClass="MyStackView" customModule="MemoryGame" customModuleProvider="target">
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="IGv-A5-6K1">
                                 <rect key="frame" x="20" y="110" width="374" height="606"/>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tVS-gD-H0K" userLabel="Back Button">

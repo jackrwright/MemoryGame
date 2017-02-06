@@ -20,7 +20,12 @@ class GamePlayViewController: UIViewController {
 		if let theGridOption = gridOption {
 			generateCardArray(gridOptions[theGridOption]!)
 		}
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
+		super.viewDidAppear(animated)
 		
+		dealCards()
 	}
 	
 	// This is a fun game, don't bother me with the clock
@@ -76,7 +81,6 @@ class GamePlayViewController: UIViewController {
 		// Generate the rows of cards as horizontal UIStackViews...
 		
 		let spacing: CGFloat = 10.0
-		var horizontalStackViews = [UIStackView]()
 		
 		// See if we need to flip the grid dimensions to best fit the device orientation
 		var width = dimensions.width
@@ -86,42 +90,54 @@ class GamePlayViewController: UIViewController {
 			height = dimensions.width
 		}
 		
-		// for each row
 		for row in 0..<height {
-			var rowCardArray = [UIButton]()
-			// for each column
-			for col in 0..<width {
-				let index = row * width + col
-				let card = CardView(cardTypeArray[index])
-				// start with the card hidden. It will be revealed when the stackview lays out its subviews
-				card.isHidden = true
-//				print("Adding CardView for '\(cardTypeArray[index])'")
-				// hook up the button's target so the cardWasTapped function is called
-				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
-				rowCardArray += [card]
-			}
-			let rowStackView = UIStackView(arrangedSubviews: rowCardArray)
+			
+			// for each row
+			
+			let rowStackView = UIStackView()
 			rowStackView.axis = .horizontal
 			rowStackView.distribution = .fillEqually
 			rowStackView.alignment = .fill
 			rowStackView.spacing = spacing
 			rowStackView.translatesAutoresizingMaskIntoConstraints = false
-			
-			view.addSubview(rowStackView)
-			horizontalStackViews.append(rowStackView)
-		}
-		
-		// Put the horizontal stack views into the vertical stack view created on the storyboard
-		for rowStackView in horizontalStackViews {
 			stackView.addArrangedSubview(rowStackView)
+			
+			// for each column
+			for col in 0..<width {
+				let index = row * width + col
+				let card = CardView(cardTypeArray[index])
+
+				// hook up the button's target so the cardWasTapped function is called
+				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
+				
+				let startPoint = CGPoint(x: 0, y: card.frame.origin.y)
+				card.frame = CGRect(origin: startPoint, size: card.frame.size)
+				print("\(card.myType): \(card.frame)")
+				rowStackView.insertArrangedSubview(card, at: col)
+				
+			}
 		}
-		stackView.axis = .vertical
-		stackView.distribution = .fillEqually
-		stackView.alignment = .fill
-		stackView.spacing = spacing
-		stackView.translatesAutoresizingMaskIntoConstraints = false
-		view.addSubview(stackView)
 		
+	}
+	
+	private func dealCards()
+	{
+		// Now that the stack views have been layed out,
+		// cause the cards to animate into their positions from offscreen
+		
+		var delay = 0.0
+		let duration = 0.15
+		for view in stackView.arrangedSubviews {
+			if let horizontalStack = view as? UIStackView {
+				for view in horizontalStack.arrangedSubviews {
+					if let cardView = view as? CardView {
+						cardView.dealAfterDelay(delay, withDuration: duration)
+						delay += duration
+					}
+				}
+			}
+		}
+
 	}
 	
 	// MARK: - Card Tap Logic

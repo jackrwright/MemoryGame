@@ -35,13 +35,30 @@ class CardView: UIButton {
 		self.clipsToBounds = false;
 		self.layer.shouldRasterize = true;
 		
-		// start by showing the card back
-		showBack()
+		// No image is added at this point because the card positions will be layed out
+		// prior to actually displaying them.
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		// This object can only be created programmatically
 		fatalError("init(coder:) has not been implemented")
+	}
+	
+	func dealAfterDelay(_ delay: TimeInterval, withDuration: TimeInterval)
+	{
+		var startFrame = self.convert(frame, from: nil)
+		let startPoint = CGPoint(x: startFrame.origin.x - frame.size.width - 10.0, y: startFrame.origin.y)
+		startFrame = CGRect(origin: startPoint, size: startFrame.size)
+		let endFrame = frame
+		
+		UIView.animate(withDuration: 0, animations: {
+			self.frame = startFrame
+		}) { (complete) in
+			self.setImage(UIImage.init(named: "CardBack"), for: .normal)
+			UIView.animate(withDuration: withDuration, delay: delay, options: [.curveEaseOut], animations: {
+				self.frame = endFrame
+			}, completion: nil)
+		}
 	}
 	
 	// Could do some animations here
