@@ -22,4 +22,12 @@ When the user chooses a grid option in the Lobby, the LobbyViewController passes
  ## Observations/ Comments
  * The instructions said there would be 10 images for the card faces, but I could only find 8 unique images, so some faces are duplicated in the game.
  * Some of the images had no border, so I added a shadow effect to make the card shapes more distinct.
- * Even though not required, I added a few animations.
+ * Even though not required, I added a few animations:
+1. **Card Flip Animation**
+
+    The **CardView** class contains *showFace()* and *showBack()* functions to flip the cards. They use the standard *UIView.transition()* class function to flip the cards between the card back and the face.
+2. **Deal Cards Animation**
+
+    I found that in order to animate the cards onto their correct resting place on the screen, I needed to let the UIStackViews lay out their subviews first. So I created the nested stackViews with the selected grid size with empty card buttons that had nil images.
+
+    Dealing the cards is controlled by **GamePlayViewController.dealCards()** which iterates through the nested UIStackView and calls *'card.dealAfterDelay(_:withDuration)* for each card. *dealAfterDelay()* moves the invisible card offscreen, sets the back image then animates it into its proper location.
