@@ -57,7 +57,9 @@ class CardView: UIButton {
 			self.setImage(UIImage.init(named: "CardBack"), for: .normal)
 			UIView.animate(withDuration: withDuration, delay: delay, options: [.curveEaseOut], animations: {
 				self.frame = endFrame
-			}, completion: nil)
+			}, completion: { (_) in
+				self.isUserInteractionEnabled = true
+			})
 		}
 	}
 	

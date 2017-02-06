@@ -106,6 +106,8 @@ class GamePlayViewController: UIViewController {
 			for col in 0..<width {
 				let index = row * width + col
 				let card = CardView(cardTypeArray[index])
+				// disable user interactions until the card is dealt
+				card.isUserInteractionEnabled = false
 
 				// hook up the button's target so the cardWasTapped function is called
 				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
