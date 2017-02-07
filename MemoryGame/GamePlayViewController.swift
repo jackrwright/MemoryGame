@@ -7,18 +7,36 @@
 //
 
 import UIKit
+import SceneKit
 
 class GamePlayViewController: UIViewController {
 	
 	var gridOption: String?
 	
+	// Choose SceneKit or not
+	private var useSceneKit = true
+	
+	private var myScene = MainScene()
+
 	@IBOutlet weak var stackView: UIStackView!
+	@IBOutlet weak var sceneView: SCNView!
 	
 	override func viewDidLoad() {
 		
 		// Construct and display the grid of cards
 		if let theGridOption = gridOption {
 			generateCardArray(gridOptions[theGridOption]!)
+		}
+		
+		if useSceneKit {
+			self.stackView.isHidden = true
+			
+			self.sceneView.scene = myScene
+
+			// allows the user to manipulate the camera
+			self.sceneView.allowsCameraControl = true
+		} else {
+			self.sceneView.isHidden = true
 		}
 	}
 	
@@ -114,7 +132,7 @@ class GamePlayViewController: UIViewController {
 				
 				let startPoint = CGPoint(x: 0, y: card.frame.origin.y)
 				card.frame = CGRect(origin: startPoint, size: card.frame.size)
-				print("\(card.myType): \(card.frame)")
+//				print("\(card.myType): \(card.frame)")
 				rowStackView.insertArrangedSubview(card, at: col)
 				
 			}
@@ -129,15 +147,39 @@ class GamePlayViewController: UIViewController {
 		
 		var delay = 0.0
 		let duration = 0.15
-		for view in stackView.arrangedSubviews {
-			if let horizontalStack = view as? UIStackView {
-				for view in horizontalStack.arrangedSubviews {
-					if let cardView = view as? CardView {
-						cardView.dealAfterDelay(delay, withDuration: duration)
-						delay += duration
+
+		if useSceneKit {
+			for view in stackView.arrangedSubviews {
+				if let horizontalStack = view as? UIStackView {
+					for view in horizontalStack.arrangedSubviews {
+						if let cardView = view as? CardView {
+							// show a card node at the cardView's position
+
+							// get the card's frame in window coordinates
+							var endFrame = cardView.convert(cardView.bounds, to: nil)
+							
+							// offset x so the card is centered
+							endFrame.origin.x += cardView.bounds.width / 2.0
+
+							let scale = 1.0 //cardView.bounds.width / 74.0
+							myScene.showCardAtPosition(endFrame.origin, scale: CGFloat(scale))
+							
+						}
 					}
 				}
 			}
+		} else {
+			for view in stackView.arrangedSubviews {
+				if let horizontalStack = view as? UIStackView {
+					for view in horizontalStack.arrangedSubviews {
+						if let cardView = view as? CardView {
+							cardView.dealAfterDelay(delay, withDuration: duration)
+							delay += duration
+						}
+					}
+				}
+			}
+			
 		}
 
 	}
