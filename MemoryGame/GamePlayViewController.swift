@@ -35,6 +35,12 @@ class GamePlayViewController: UIViewController {
 
 			// allows the user to manipulate the camera
 			self.sceneView.allowsCameraControl = true
+			
+			// add a tap gesture recognizer
+			let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+			self.sceneView.addGestureRecognizer(tapGesture)
+			
+
 		} else {
 			self.sceneView.isHidden = true
 		}
@@ -50,7 +56,38 @@ class GamePlayViewController: UIViewController {
 	override var prefersStatusBarHidden: Bool {
 		return true
 	}
+	
+	// MARK: - SceneKit Tap Handler
 
+	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
+		
+		// check what nodes are tapped
+		let p = gestureRecognize.location(in: self.sceneView)
+		let hitResults = self.sceneView.hitTest(p, options: [:])
+		// check that we clicked on at least one object
+		if hitResults.count > 0 {
+			// retrieved the first clicked object
+			let result: AnyObject = hitResults[0]
+			if let cardNode = result.node as? CardNode {
+				if let cardView = cardNode.myCardView {
+
+					// rotate the card
+					
+					SCNTransaction.begin()
+					SCNTransaction.animationDuration = 0.33
+					
+					cardNode.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: cardNode.rotation.w + Float(M_PI))
+					
+					SCNTransaction.commit()
+					
+					// handle the tap
+					cardWasTapped(cardView)
+				}
+			}
+		}
+		
+	}
+	
 	// MARK: - Private Implementation
 	
 	private typealias ArrayDimensions = (width: Int, height: Int)
@@ -154,16 +191,8 @@ class GamePlayViewController: UIViewController {
 					for view in horizontalStack.arrangedSubviews {
 						if let cardView = view as? CardView {
 							// show a card node at the cardView's position
+							myScene.showCard(cardView)
 
-							// get the card's frame in window coordinates
-							var endFrame = cardView.convert(cardView.bounds, to: nil)
-							
-							// offset x so the card is centered
-							endFrame.origin.x += cardView.bounds.width / 2.0
-
-							let scale = 1.0 //cardView.bounds.width / 74.0
-							myScene.showCardAtPosition(endFrame.origin, scale: CGFloat(scale))
-							
 						}
 					}
 				}

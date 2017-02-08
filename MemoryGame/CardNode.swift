@@ -12,6 +12,8 @@ import SceneKit
 
 class CardNode: SCNNode {
 	
+	var myCardView: CardView?
+	
 	private var cubeNode: SCNNode!
 
 	override init() {

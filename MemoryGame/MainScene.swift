@@ -51,21 +51,25 @@ class MainScene: SCNScene {
 		
 		self.rootNode.addChildNode(self.cameraNode)
 		self.rootNode.addChildNode(self.lightNode)
+		
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func positionFromPoint(_ point: CGPoint) -> SCNVector3
+	func showCard(_ cardView: CardView)
 	{
-		let position = SCNVector3.init(x: (Float)(point.x) / 100.0, y: (Float)(point.y) / 100.0, z: 0.0)
+		// get the card's frame in window coordinates
+		var endFrame = cardView.convert(cardView.bounds, to: nil)
 		
-		return position
-	}
-	
-	func showCardAtPosition(_ point: CGPoint, scale: CGFloat)
-	{
+		// offset x so the card is centered
+		endFrame.origin.x += cardView.bounds.width / 2.0
+		
+		let point = endFrame.origin
+		
+		let scale = 1.0 //cardView.bounds.width / 74.0
+		
 		// Calculate the position in our scene
 		
 		let theCardNode = CardNode()
@@ -73,13 +77,13 @@ class MainScene: SCNScene {
 		print("Creating card at: \(position)")
 		theCardNode.position = position
 		
+		theCardNode.myCardView = cardView
+		
 		// need to scale the card because the UISTackView may have
 		theCardNode.scale = SCNVector3.init(x: Float(scale), y: Float(scale), z: Float(scale))
 		
 		self.rootNode.addChildNode(theCardNode)
+
 	}
 	
-	func dealAfterDelay(_ delay: TimeInterval, withDuration: TimeInterval)
-	{
-	}
 }
