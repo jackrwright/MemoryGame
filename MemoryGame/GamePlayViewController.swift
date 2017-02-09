@@ -37,7 +37,7 @@ class GamePlayViewController: UIViewController {
 			self.sceneView.scene = myScene
 
 			// For debugging: allows the user to manipulate the camera
-			self.sceneView.allowsCameraControl = true
+//			self.sceneView.allowsCameraControl = true
 			
 			// add a tap gesture recognizer to handle card taps
 			let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -68,31 +68,6 @@ class GamePlayViewController: UIViewController {
 	
 	// MARK: - SceneKit Stuff
 	
-	func convertToScenePointFromView(_ cardView: CardView) -> SCNVector3
-	{
-		// get the stackView's frame in global coordinates
-		let stackFrame = stackView.convert(stackView.bounds, to: nil)
-		
-		// get the card's frame in global coordinates
-		let cardFrame = cardView.convert(cardView.bounds, to: nil)
-		print("\nCreating \(cardView.myType)...")
-		print("card origin: \(cardFrame.origin.x), \(cardFrame.origin.y)")
-		
-		// Convert the card's origin to SceneKit's coord space...
-		
-		var point = cardFrame.origin
-		
-		point.x = point.x - stackFrame.width / 2.0 + cardFrame.size.width / 2.0
-		point.y = point.y - stackFrame.height / 2.0 - cardFrame.size.height / 2.0
-		
-		// scale it to match the scene's scale
-		point.x /= 10.0
-		point.y /= 10.0
-		
-		return SCNVector3.init(x: Float(point.x), y: Float(point.y), z: 0.0)
-		
-	}
-
 	func showCard(_ cardView: CardView, in view: UIView)
 	{
 		// Calculate the position in our scene
@@ -105,8 +80,10 @@ class GamePlayViewController: UIViewController {
 		let theCardNode = CardNode(cardView)
 		self.boardNode.addChildNode(theCardNode)
 		
+		cardView.myNode = theCardNode
+		
 		let cardFrame = cardView.convert(cardView.bounds, to: view)
-		let position = SCNVector3.init(cardFrame.mid.x, cardFrame.mid.y, 0.0) //convertToScenePointFromView(cardView)
+		let position = SCNVector3.init(cardFrame.mid.x, cardFrame.mid.y, 0.0)
 		print("SceneKit position: \(position)")
 		theCardNode.position = position
 		
@@ -120,7 +97,7 @@ class GamePlayViewController: UIViewController {
 		theCardNode.scale = SCNVector3.init(x: Float(scale), y: Float(scale), z: Float(scale))
 		
 	}
-
+	
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
 		
 		// check what nodes are tapped
@@ -133,15 +110,15 @@ class GamePlayViewController: UIViewController {
 			if let cardNode = result.node as? CardNode {
 				if let cardView = cardNode.myCardView {
 
-					// rotate the card
-					
-					SCNTransaction.begin()
-					SCNTransaction.animationDuration = 0.33
-					
-					cardNode.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: cardNode.rotation.w + Float(M_PI))
-					
-					SCNTransaction.commit()
-					
+//					// rotate the card
+//					
+//					SCNTransaction.begin()
+//					SCNTransaction.animationDuration = 0.33
+//					
+//					cardNode.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: cardNode.rotation.w + Float(M_PI))
+//					
+//					SCNTransaction.commit()
+//					
 					// handle the tap
 					cardWasTapped(cardView)
 				}
@@ -270,10 +247,7 @@ class GamePlayViewController: UIViewController {
 					for view in horizontalStack.arrangedSubviews {
 						if let cardView = view as? CardView {
 							// show a card node at the cardView's position
-							cardView.dealAfterDelay(0, withDuration: 0, completion: { () in
-								self.showCard(cardView, in: self.sceneView)
-							})
-
+							self.showCard(cardView, in: self.sceneView)
 						}
 					}
 				}
@@ -298,8 +272,7 @@ class GamePlayViewController: UIViewController {
 				if let horizontalStack = view as? UIStackView {
 					for view in horizontalStack.arrangedSubviews {
 						if let cardView = view as? CardView {
-							cardView.dealAfterDelay(delay, withDuration: duration, completion: { () in
-							})
+							cardView.dealAfterDelay(delay, withDuration: duration)
 							delay += duration
 						}
 					}

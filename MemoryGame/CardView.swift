@@ -7,10 +7,13 @@
 //
 
 import UIKit
+import SceneKit
 
 class CardView: UIButton {
 	
 	var myType: CardType
+	
+	var myNode: CardNode?
 	
 	// These dimensions match the @1x image size,
 	// but the image may be redimensioned by the UIStackView.
@@ -26,7 +29,7 @@ class CardView: UIButton {
 		
 		// Set the button's image to a transparent image of the correct initial size
 		// so the SceneKit code can determine the size adjusted by UISTackView layout.
-		if let emptyImage = UIImage.imageWithColor(color: UIColor.green, size: CGSize(width: CardView.width, height: CardView.height)) {
+		if let emptyImage = UIImage.imageWithColor(color: UIColor.clear, size: CGSize(width: CardView.width, height: CardView.height)) {
 			self.setImage(emptyImage, for: .normal)
 		}
 		// This keeps the aspect ratio of the card image constant
@@ -69,18 +72,35 @@ class CardView: UIButton {
 	// Could do some animations here
 	func showFace()
 	{
-		if let imageName = CardType.faceImageForType(myType) {
+		if let node = myNode {
+			// We're using SceneKit
 			
-			UIView.transition(with: self.imageView!, duration: 0.25, options: .transitionFlipFromRight, animations: {
-				self.setImage(UIImage.init(named: imageName), for: .normal)
-			}, completion: nil)
+			// rotate the card
+			node.rotate()
+			
+		} else {
+			if let imageName = CardType.faceImageForType(myType) {
+				
+				UIView.transition(with: self.imageView!, duration: 0.25, options: .transitionFlipFromRight, animations: {
+					self.setImage(UIImage.init(named: imageName), for: .normal)
+				}, completion: nil)
+			}
 		}
 	}
 	
 	func showBack()
 	{
-		UIView.transition(with: self.imageView!, duration: 0.25, options: .transitionFlipFromLeft, animations: {
-			self.setImage(UIImage.init(named: "CardBack"), for: .normal)
-		}, completion: nil)
+		if let node = myNode {
+			// We're using SceneKit
+			
+			// rotate the card
+			node.rotate()
+			
+		} else {
+			UIView.transition(with: self.imageView!, duration: 0.25, options: .transitionFlipFromLeft, animations: {
+				self.setImage(UIImage.init(named: "CardBack"), for: .normal)
+			}, completion: nil)
+			
+		}
 	}
 }
