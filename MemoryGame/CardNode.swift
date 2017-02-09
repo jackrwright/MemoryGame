@@ -12,19 +12,32 @@ import SceneKit
 
 class CardNode: SCNNode {
 	
-	var myCardView: CardView?
+	var myCardView: CardView!
 	
 	private var cubeNode: SCNNode!
 
-	override init() {
+	required init(_ cardView: CardView) {
+		
+		myCardView = cardView
+		
 		super.init()
+		
 		// create a cube node to represent the card
-		let cube = SCNBox(width: 0.74, height: 1.06, length: 0.05, chamferRadius: 0.005)
+		let cube = SCNBox(width: CardView.width, height: CardView.height, length: 5, chamferRadius: 5)
 
-		let cubeMaterial = SCNMaterial()
-		cubeMaterial.diffuse.contents = UIColor.init(white: 0.8, alpha: 1.0)
-		cube.materials = [cubeMaterial]
+		let material_white = SCNMaterial()
+		material_white.diffuse.contents = UIColor.init(white: 0.8, alpha: 1.0)
 
+		let material_Back = SCNMaterial()
+		material_Back.diffuse.contents = UIImage(named: "CardBack")
+		
+		let material_Face = SCNMaterial()
+		if let imageName = CardType.faceImageForType((myCardView.myType)) {
+			material_Face.diffuse.contents = UIImage(named: imageName)
+		}
+		
+		cube.materials = [material_Back,  material_white, material_Face, material_white, material_white, material_white, material_white]
+		
 		self.geometry = cube
 	}
 	

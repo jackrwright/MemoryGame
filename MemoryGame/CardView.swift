@@ -12,18 +12,23 @@ class CardView: UIButton {
 	
 	var myType: CardType
 	
+	// These dimensions match the @1x image size,
+	// but the image may be redimensioned by the UIStackView.
+	static let width: CGFloat = 74
+	static let height: CGFloat = 106
+	
 	required init(_ type: CardType) {
 		// set myType before super.init is called
 		self.myType = type
 		
-		// These dimensions match the @1x image size,
-		// but the image may be redimensioned by the UIStackView.
-		let width: CGFloat = 74
-		let height: CGFloat = 106
-		
-		let frame = CGRect(x: 0, y: 0, width: width, height: height)
+		let frame = CGRect(x: 0, y: 0, width: CardView.width, height: CardView.height)
 		super.init(frame: frame)
 		
+		// Set the button's image to a transparent image of the correct initial size
+		// so the SceneKit code can determine the size adjusted by UISTackView layout.
+		if let emptyImage = UIImage.imageWithColor(color: UIColor.green, size: CGSize(width: CardView.width, height: CardView.height)) {
+			self.setImage(emptyImage, for: .normal)
+		}
 		// This keeps the aspect ratio of the card image constant
 		self.imageView?.contentMode = .scaleAspectFit
 		
@@ -35,8 +40,6 @@ class CardView: UIButton {
 		self.clipsToBounds = false;
 		self.layer.shouldRasterize = true;
 		
-		// No image is added at this point because the card positions will be layed out
-		// prior to actually displaying them.
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -44,7 +47,7 @@ class CardView: UIButton {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func dealAfterDelay(_ delay: TimeInterval, withDuration: TimeInterval)
+	func dealAfterDelay(_ delay: TimeInterval, withDuration duration: TimeInterval)
 	{
 		var startFrame = self.convert(frame, from: nil)
 		let startPoint = CGPoint(x: startFrame.origin.x - frame.size.width - 10.0, y: startFrame.origin.y)
@@ -55,7 +58,7 @@ class CardView: UIButton {
 			self.frame = startFrame
 		}) { (complete) in
 			self.setImage(UIImage.init(named: "CardBack"), for: .normal)
-			UIView.animate(withDuration: withDuration, delay: delay, options: [.curveEaseOut], animations: {
+			UIView.animate(withDuration: duration, delay: delay, options: [.curveEaseOut], animations: {
 				self.frame = endFrame
 			}, completion: { (_) in
 				self.isUserInteractionEnabled = true

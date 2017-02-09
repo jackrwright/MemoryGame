@@ -9,6 +9,11 @@
 import UIKit
 import SceneKit
 
+struct Constants {
+	// The scale of our scene relative to the UIView coordinate system
+	static let sceneScale: CGFloat = 0.1
+}
+
 class GamePlayViewController: UIViewController {
 	
 	var gridOption: String?
@@ -16,27 +21,25 @@ class GamePlayViewController: UIViewController {
 	// Choose SceneKit or not
 	private var useSceneKit = true
 	
-	private var myScene = MainScene()
+	private var myScene = SCNScene(named: "Game.scn")!
+	private var boardNode: SCNNode!
 
 	@IBOutlet weak var stackView: UIStackView!
 	@IBOutlet weak var sceneView: SCNView!
 	
+	// MARK: - UIViewController delegate
+	
 	override func viewDidLoad() {
-		
-		// Construct and display the grid of cards
-		if let theGridOption = gridOption {
-			generateCardArray(gridOptions[theGridOption]!)
-		}
 		
 		if useSceneKit {
 			self.stackView.isHidden = true
 			
 			self.sceneView.scene = myScene
 
-			// allows the user to manipulate the camera
+			// For debugging: allows the user to manipulate the camera
 			self.sceneView.allowsCameraControl = true
 			
-			// add a tap gesture recognizer
+			// add a tap gesture recognizer to handle card taps
 			let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
 			self.sceneView.addGestureRecognizer(tapGesture)
 			
@@ -44,6 +47,12 @@ class GamePlayViewController: UIViewController {
 		} else {
 			self.sceneView.isHidden = true
 		}
+
+		// Construct and display the grid of cards
+		if let theGridOption = gridOption {
+			generateCardArray(gridOptions[theGridOption]!)
+		}
+		
 	}
 	
 	override func viewDidAppear(_ animated: Bool) {
@@ -57,7 +66,60 @@ class GamePlayViewController: UIViewController {
 		return true
 	}
 	
-	// MARK: - SceneKit Tap Handler
+	// MARK: - SceneKit Stuff
+	
+	func convertToScenePointFromView(_ cardView: CardView) -> SCNVector3
+	{
+		// get the stackView's frame in global coordinates
+		let stackFrame = stackView.convert(stackView.bounds, to: nil)
+		
+		// get the card's frame in global coordinates
+		let cardFrame = cardView.convert(cardView.bounds, to: nil)
+		print("\nCreating \(cardView.myType)...")
+		print("card origin: \(cardFrame.origin.x), \(cardFrame.origin.y)")
+		
+		// Convert the card's origin to SceneKit's coord space...
+		
+		var point = cardFrame.origin
+		
+		point.x = point.x - stackFrame.width / 2.0 + cardFrame.size.width / 2.0
+		point.y = point.y - stackFrame.height / 2.0 - cardFrame.size.height / 2.0
+		
+		// scale it to match the scene's scale
+		point.x /= 10.0
+		point.y /= 10.0
+		
+		return SCNVector3.init(x: Float(point.x), y: Float(point.y), z: 0.0)
+		
+	}
+
+	func showCard(_ cardView: CardView, in view: UIView)
+	{
+		// Calculate the position in our scene
+		
+		// Adjust the size of the card image to aspect fit the CardView (which has been layed out by the UIStackView)
+		let imageRect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: CardView.width, height: CardView.height))
+		let adjustedRect = CGRect.aspectFitRect(imageRect, into: cardView.bounds)
+		
+		// Create a card node and add it as a child to the board node
+		let theCardNode = CardNode(cardView)
+		self.boardNode.addChildNode(theCardNode)
+		
+		let cardFrame = cardView.convert(cardView.bounds, to: view)
+		let position = SCNVector3.init(cardFrame.mid.x, cardFrame.mid.y, 0.0) //convertToScenePointFromView(cardView)
+		print("SceneKit position: \(position)")
+		theCardNode.position = position
+		
+		theCardNode.myCardView = cardView
+		
+		// compute the scale based on the changed size
+		let scale: CGFloat = adjustedRect.width / CardView.width
+		
+		print("card scale = \(scale)")
+		
+		theCardNode.scale = SCNVector3.init(x: Float(scale), y: Float(scale), z: Float(scale))
+		
+	}
 
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
 		
@@ -167,14 +229,13 @@ class GamePlayViewController: UIViewController {
 				// hook up the button's target so the cardWasTapped function is called
 				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
 				
-				let startPoint = CGPoint(x: 0, y: card.frame.origin.y)
-				card.frame = CGRect(origin: startPoint, size: card.frame.size)
+//				let startPoint = CGPoint(x: 0, y: card.frame.origin.y)
+//				card.frame = CGRect(origin: startPoint, size: card.frame.size)
 //				print("\(card.myType): \(card.frame)")
 				rowStackView.insertArrangedSubview(card, at: col)
 				
 			}
 		}
-		
 	}
 	
 	private func dealCards()
@@ -186,23 +247,59 @@ class GamePlayViewController: UIViewController {
 		let duration = 0.15
 
 		if useSceneKit {
+
+			// create a plane proportional to the size of the outer stackView at y = 0
+			
+			let board = SCNPlane()
+			
+			board.width = stackView.bounds.size.width
+			board.height = stackView.bounds.size.height
+			print("board dimensions: \(board.width), \(board.height)")
+			let boardMaterial = SCNMaterial()
+			boardMaterial.diffuse.contents = UIColor.clear
+			board.firstMaterial = boardMaterial
+
+			// Create a board node that is positioned so cards can be added to it using their UIView coordinates
+			
+			boardNode = SCNNode(geometry: board)
+
+			self.myScene.rootNode.addChildNode(boardNode)
+
 			for view in stackView.arrangedSubviews {
 				if let horizontalStack = view as? UIStackView {
 					for view in horizontalStack.arrangedSubviews {
 						if let cardView = view as? CardView {
 							// show a card node at the cardView's position
-							myScene.showCard(cardView)
+							cardView.dealAfterDelay(0, withDuration: 0, completion: { () in
+								self.showCard(cardView, in: self.sceneView)
+							})
 
 						}
 					}
 				}
 			}
+			
+			// Now, position and scale the board
+			
+			var boardPos = SCNVector3.init(stackView.frame.origin.x - CGFloat(board.width / 2.0) - 40,
+			                               stackView.frame.origin.y - CGFloat(board.height / 2.0) - 10,
+			                               0.0)
+			boardPos = SCNVector3.init(boardPos.x * Float(Constants.sceneScale),
+			                           boardPos.y * Float(Constants.sceneScale),
+			                           boardPos.z
+			)
+			print("board position: \(boardPos)")
+			boardNode.position = boardPos
+			
+			boardNode.scale = SCNVector3(Constants.sceneScale, Constants.sceneScale, Constants.sceneScale)
+			
 		} else {
 			for view in stackView.arrangedSubviews {
 				if let horizontalStack = view as? UIStackView {
 					for view in horizontalStack.arrangedSubviews {
 						if let cardView = view as? CardView {
-							cardView.dealAfterDelay(delay, withDuration: duration)
+							cardView.dealAfterDelay(delay, withDuration: duration, completion: { () in
+							})
 							delay += duration
 						}
 					}
