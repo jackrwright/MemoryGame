@@ -23,7 +23,7 @@ class GamePlayViewController: UIViewController {
 	
 	private var myScene = SCNScene(named: "Game.scn")!
 	private var boardNode: SCNNode!
-
+	
 	@IBOutlet weak var stackView: UIStackView!
 	@IBOutlet weak var sceneView: SCNView!
 	
@@ -35,19 +35,19 @@ class GamePlayViewController: UIViewController {
 			self.stackView.isHidden = true
 			
 			self.sceneView.scene = myScene
-
+			
 			// For debugging: allows the user to manipulate the camera
-//			self.sceneView.allowsCameraControl = true
+			//			self.sceneView.allowsCameraControl = true
 			
 			// add a tap gesture recognizer to handle card taps
 			let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
 			self.sceneView.addGestureRecognizer(tapGesture)
 			
-
+			
 		} else {
 			self.sceneView.isHidden = true
 		}
-
+		
 		// Construct and display the grid of cards
 		if let theGridOption = gridOption {
 			generateCardArray(gridOptions[theGridOption]!)
@@ -68,47 +68,46 @@ class GamePlayViewController: UIViewController {
 	
 	// MARK: - SceneKit Stuff
 	
-	func showCard(_ cardView: CardView, afterDelay delay: TimeInterval, withDuration duration: TimeInterval)
+	func showCard(_ cardView: CardView, atDepth depth: CGFloat, afterDelay delay: TimeInterval, withDuration duration: TimeInterval)
 	{
 		
+		// Create a card node, position it off screen
+		
+		let theCardNode = CardNode(cardView)
+		
+		// set a starting position off screen
+		let startPosition = SCNVector3.init(self.sceneView.frame.width / 2.0, self.sceneView.frame.size.height + CardView.height * 0.7, depth)
+		
+		// add it as a child of the board node
+		self.boardNode.addChildNode(theCardNode)
+		
+		theCardNode.position = startPosition
+//		print("Start position = \(theCardNode.position)")
+		
+		let cardFrame = cardView.convert(cardView.bounds, to: self.sceneView)
+		let endPosition = SCNVector3.init(cardFrame.mid.x, cardFrame.mid.y, 0.0)
+		
 		Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { (timer) in
-
-			// Create a card node, position it in the scene according to the given cardView
-			// and add it as a child to the board node
 			
-			let theCardNode = CardNode(cardView)
-			
-			// set a starting position off screen
-			let startPosition = SCNVector3.init(0.0, 0.0, 0.0)
-			
-			// add it as a child of the board node
-			self.boardNode.addChildNode(theCardNode)
+			// Animate the card onto the scene
 			
 			SCNTransaction.begin()
-
-				theCardNode.position = startPosition
-
-				let cardFrame = cardView.convert(cardView.bounds, to: self.sceneView)
-				let endPosition = SCNVector3.init(cardFrame.mid.x, cardFrame.mid.y, 0.0)
-
-				// Animate the card onto the scene
-				
-				SCNTransaction.begin()
-					SCNTransaction.animationDuration = duration
-					SCNTransaction.animationTimingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseOut)
-					
-					SCNTransaction.completionBlock = (() -> Void)? {
-						theCardNode.isUserInteractionEnabled = true
-					}
-					
-					theCardNode.position = endPosition
-				SCNTransaction.commit()
+			
+			SCNTransaction.animationDuration = duration
+			SCNTransaction.animationTimingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseOut)
+			
+			theCardNode.position = endPosition
+//			print("End position = \(theCardNode.position)")
+			
+			// enable user interaction when the animation is complete
+			SCNTransaction.completionBlock = (() -> Void)? {
+				theCardNode.isUserInteractionEnabled = true
+			}
 			
 			SCNTransaction.commit()
-		})
-
+			
+		}) // timer block
 		
-//		theCardNode.isUserInteractionEnabled = true
 	}
 	
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -205,7 +204,7 @@ class GamePlayViewController: UIViewController {
 				let card = CardView(cardTypeArray[index])
 				// disable user interactions until the card is dealt
 				card.isUserInteractionEnabled = false
-
+				
 				// hook up the button's target so the cardWasTapped function is called
 				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
 				
@@ -222,33 +221,38 @@ class GamePlayViewController: UIViewController {
 		
 		var delay = 0.0
 		let duration = 0.15
-
+		
 		if useSceneKit {
-
+			
 			// create a plane proportional to the size of the outer stackView at y = 0
 			
 			let board = SCNPlane()
 			
 			board.width = stackView.bounds.size.width
 			board.height = stackView.bounds.size.height
-//			print("board dimensions: \(board.width), \(board.height)")
+			//			print("board dimensions: \(board.width), \(board.height)")
 			let boardMaterial = SCNMaterial()
 			boardMaterial.diffuse.contents = UIColor.clear
 			board.firstMaterial = boardMaterial
-
+			
 			// Create a board node that is positioned so cards can be added to it using their UIView coordinates
 			
 			boardNode = SCNNode(geometry: board)
-
+			
 			self.myScene.rootNode.addChildNode(boardNode)
-
-			for view in stackView.arrangedSubviews {
-				if let horizontalStack = view as? UIStackView {
-					for view in horizontalStack.arrangedSubviews {
-						if let cardView = view as? CardView {
-							// show a card node at the cardView's position
-							self.showCard(cardView, afterDelay: delay, withDuration: duration)
-							delay += duration
+			
+			if let dimensions = gridOptions[gridOption!] {
+				let numberOfCards = dimensions.width * dimensions.height
+				var depth = CGFloat(numberOfCards) * CardNode.depth
+				for view in stackView.arrangedSubviews {
+					if let horizontalStack = view as? UIStackView {
+						for view in horizontalStack.arrangedSubviews {
+							if let cardView = view as? CardView {
+								// show a card node at the cardView's position
+								self.showCard(cardView, atDepth: depth, afterDelay: delay, withDuration: duration)
+								delay += duration
+								depth -= CardNode.depth
+							}
 						}
 					}
 				}
@@ -263,7 +267,7 @@ class GamePlayViewController: UIViewController {
 			                           boardPos.y * Float(Constants.sceneScale),
 			                           boardPos.z
 			)
-//			print("board position: \(boardPos)")
+			//			print("board position: \(boardPos)")
 			boardNode.position = boardPos
 			
 			boardNode.scale = SCNVector3(Constants.sceneScale, Constants.sceneScale, Constants.sceneScale)
@@ -281,7 +285,7 @@ class GamePlayViewController: UIViewController {
 			}
 			
 		}
-
+		
 	}
 	
 	// MARK: - Card Tap Logic

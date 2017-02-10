@@ -16,6 +16,8 @@ class CardNode: SCNNode {
 	
 	var isUserInteractionEnabled: Bool = false
 	
+	static let depth: CGFloat = 5.0
+	
 	private var cubeNode: SCNNode!
 
 	required init(_ cardView: CardView) {
@@ -25,7 +27,7 @@ class CardNode: SCNNode {
 		super.init()
 		
 		// create a cube node to represent the card
-		let cube = SCNBox(width: CardView.width, height: CardView.height, length: 5, chamferRadius: 5)
+		let cube = SCNBox(width: CardView.width, height: CardView.height, length: CardNode.depth, chamferRadius: 5)
 
 		let material_white = SCNMaterial()
 		material_white.diffuse.contents = UIColor.init(white: 0.8, alpha: 1.0)
