@@ -14,6 +14,8 @@ class CardNode: SCNNode {
 	
 	var myCardView: CardView!
 	
+	var isUserInteractionEnabled: Bool = false
+	
 	private var cubeNode: SCNNode!
 
 	required init(_ cardView: CardView) {
@@ -39,6 +41,23 @@ class CardNode: SCNNode {
 		cube.materials = [material_Back,  material_white, material_Face, material_white, material_white, material_white, material_white]
 		
 		self.geometry = cube
+
+		
+		// Adjust the size of the card image to aspect fit the CardView (which has been layed out by the UIStackView)
+		let imageRect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: CardView.width, height: CardView.height))
+		let adjustedRect = CGRect.aspectFitRect(imageRect, into: cardView.bounds)
+		
+		cardView.myNode = self
+		
+		self.myCardView = cardView
+		
+		// compute the scale based on the changed size
+		let scale: CGFloat = adjustedRect.width / CardView.width
+		
+//		print("card scale = \(scale)")
+		
+		self.scale = SCNVector3.init(x: Float(scale), y: Float(scale), z: Float(scale))
+		
 	}
 	
 	required init?(coder aDecoder: NSCoder) {
@@ -55,8 +74,6 @@ class CardNode: SCNNode {
 		self.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: self.rotation.w + Float(M_PI))
 		
 		SCNTransaction.commit()
-		
-
 	}
 	
 }

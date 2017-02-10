@@ -50,6 +50,16 @@ class CardView: UIButton {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
+	override var isUserInteractionEnabled: Bool {
+		didSet {
+			super.isUserInteractionEnabled = isUserInteractionEnabled
+			
+			if let node = myNode {
+				node.isUserInteractionEnabled = isUserInteractionEnabled
+			}
+		}
+	}
+	
 	func dealAfterDelay(_ delay: TimeInterval, withDuration duration: TimeInterval)
 	{
 		var startFrame = self.convert(frame, from: nil)

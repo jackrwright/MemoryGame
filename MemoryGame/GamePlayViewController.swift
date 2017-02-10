@@ -68,34 +68,47 @@ class GamePlayViewController: UIViewController {
 	
 	// MARK: - SceneKit Stuff
 	
-	func showCard(_ cardView: CardView, in view: UIView)
+	func showCard(_ cardView: CardView, afterDelay delay: TimeInterval, withDuration duration: TimeInterval)
 	{
-		// Calculate the position in our scene
 		
-		// Adjust the size of the card image to aspect fit the CardView (which has been layed out by the UIStackView)
-		let imageRect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: CardView.width, height: CardView.height))
-		let adjustedRect = CGRect.aspectFitRect(imageRect, into: cardView.bounds)
+		Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { (timer) in
+
+			// Create a card node, position it in the scene according to the given cardView
+			// and add it as a child to the board node
+			
+			let theCardNode = CardNode(cardView)
+			
+			// set a starting position off screen
+			let startPosition = SCNVector3.init(0.0, 0.0, 0.0)
+			
+			// add it as a child of the board node
+			self.boardNode.addChildNode(theCardNode)
+			
+			SCNTransaction.begin()
+
+				theCardNode.position = startPosition
+
+				let cardFrame = cardView.convert(cardView.bounds, to: self.sceneView)
+				let endPosition = SCNVector3.init(cardFrame.mid.x, cardFrame.mid.y, 0.0)
+
+				// Animate the card onto the scene
+				
+				SCNTransaction.begin()
+					SCNTransaction.animationDuration = duration
+					SCNTransaction.animationTimingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseOut)
+					
+					SCNTransaction.completionBlock = (() -> Void)? {
+						theCardNode.isUserInteractionEnabled = true
+					}
+					
+					theCardNode.position = endPosition
+				SCNTransaction.commit()
+			
+			SCNTransaction.commit()
+		})
+
 		
-		// Create a card node and add it as a child to the board node
-		let theCardNode = CardNode(cardView)
-		self.boardNode.addChildNode(theCardNode)
-		
-		cardView.myNode = theCardNode
-		
-		let cardFrame = cardView.convert(cardView.bounds, to: view)
-		let position = SCNVector3.init(cardFrame.mid.x, cardFrame.mid.y, 0.0)
-		print("SceneKit position: \(position)")
-		theCardNode.position = position
-		
-		theCardNode.myCardView = cardView
-		
-		// compute the scale based on the changed size
-		let scale: CGFloat = adjustedRect.width / CardView.width
-		
-		print("card scale = \(scale)")
-		
-		theCardNode.scale = SCNVector3.init(x: Float(scale), y: Float(scale), z: Float(scale))
-		
+//		theCardNode.isUserInteractionEnabled = true
 	}
 	
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -107,18 +120,8 @@ class GamePlayViewController: UIViewController {
 		if hitResults.count > 0 {
 			// retrieved the first clicked object
 			let result: AnyObject = hitResults[0]
-			if let cardNode = result.node as? CardNode {
+			if let cardNode = result.node as? CardNode, cardNode.isUserInteractionEnabled {
 				if let cardView = cardNode.myCardView {
-
-//					// rotate the card
-//					
-//					SCNTransaction.begin()
-//					SCNTransaction.animationDuration = 0.33
-//					
-//					cardNode.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: cardNode.rotation.w + Float(M_PI))
-//					
-//					SCNTransaction.commit()
-//					
 					// handle the tap
 					cardWasTapped(cardView)
 				}
@@ -206,9 +209,6 @@ class GamePlayViewController: UIViewController {
 				// hook up the button's target so the cardWasTapped function is called
 				card.addTarget(self, action: #selector(cardWasTapped(_:)), for: .touchUpInside)
 				
-//				let startPoint = CGPoint(x: 0, y: card.frame.origin.y)
-//				card.frame = CGRect(origin: startPoint, size: card.frame.size)
-//				print("\(card.myType): \(card.frame)")
 				rowStackView.insertArrangedSubview(card, at: col)
 				
 			}
@@ -231,7 +231,7 @@ class GamePlayViewController: UIViewController {
 			
 			board.width = stackView.bounds.size.width
 			board.height = stackView.bounds.size.height
-			print("board dimensions: \(board.width), \(board.height)")
+//			print("board dimensions: \(board.width), \(board.height)")
 			let boardMaterial = SCNMaterial()
 			boardMaterial.diffuse.contents = UIColor.clear
 			board.firstMaterial = boardMaterial
@@ -247,7 +247,8 @@ class GamePlayViewController: UIViewController {
 					for view in horizontalStack.arrangedSubviews {
 						if let cardView = view as? CardView {
 							// show a card node at the cardView's position
-							self.showCard(cardView, in: self.sceneView)
+							self.showCard(cardView, afterDelay: delay, withDuration: duration)
+							delay += duration
 						}
 					}
 				}
@@ -262,7 +263,7 @@ class GamePlayViewController: UIViewController {
 			                           boardPos.y * Float(Constants.sceneScale),
 			                           boardPos.z
 			)
-			print("board position: \(boardPos)")
+//			print("board position: \(boardPos)")
 			boardNode.position = boardPos
 			
 			boardNode.scale = SCNVector3(Constants.sceneScale, Constants.sceneScale, Constants.sceneScale)
