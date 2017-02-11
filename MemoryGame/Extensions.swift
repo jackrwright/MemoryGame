@@ -15,6 +15,13 @@ extension Int {
 	}
 }
 
+public extension Float {
+	public static func random(min: Float, max: Float) -> Float {
+		let r32 = Float(arc4random()) / Float(UInt32.max)
+		return (r32 * (max - min)) + min
+	}
+}
+
 extension CGRect {
 	
 	var mid: CGPoint { return CGPoint(x: midX, y: midY) }

@@ -45,6 +45,11 @@ class CardNode: SCNNode {
 		self.geometry = cube
 
 		
+		// add a physical body
+		let physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+		physicsBody.mass = 0.0
+		self.physicsBody = physicsBody
+
 		// Adjust the size of the card image to aspect fit the CardView (which has been layed out by the UIStackView)
 		let imageRect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: CardView.width, height: CardView.height))
 		let adjustedRect = CGRect.aspectFitRect(imageRect, into: cardView.bounds)
@@ -76,6 +81,13 @@ class CardNode: SCNNode {
 		self.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: self.rotation.w + Float(M_PI))
 		
 		SCNTransaction.commit()
+	}
+	
+	func makePhysical()
+	{
+		// add a physical body
+		let physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
+		self.physicsBody = physicsBody
 	}
 	
 }

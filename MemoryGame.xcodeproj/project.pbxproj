@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		218AA7CA1E4E9B04004BADC6 /* Game2.scn in Resources */ = {isa = PBXBuildFile; fileRef = 218AA7C91E4E9B04004BADC6 /* Game2.scn */; };
 		219A033E1E4A2BAA00064C37 /* CardNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 219A033D1E4A2BAA00064C37 /* CardNode.swift */; };
 		21A8C78F1E44C767008F923F /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C78E1E44C767008F923F /* AppDelegate.swift */; };
 		21A8C7911E44C767008F923F /* LobbyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C7901E44C767008F923F /* LobbyViewController.swift */; };
@@ -23,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		218AA7C91E4E9B04004BADC6 /* Game2.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Game2.scn; sourceTree = "<group>"; };
 		219A033D1E4A2BAA00064C37 /* CardNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CardNode.swift; sourceTree = "<group>"; };
 		21A8C78B1E44C767008F923F /* MemoryGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemoryGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		21A8C78E1E44C767008F923F /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			isa = PBXGroup;
 			children = (
 				21FCA7E31E4AC17900CCDBA7 /* Game.scn */,
+				218AA7C91E4E9B04004BADC6 /* Game2.scn */,
 				219A033D1E4A2BAA00064C37 /* CardNode.swift */,
 				21FCA7E11E4ABD4200CCDBA7 /* art.scnassets */,
 			);
@@ -171,6 +174,7 @@
 				21A8C7961E44C767008F923F /* Assets.xcassets in Resources */,
 				21FCA7E41E4AC17900CCDBA7 /* Game.scn in Resources */,
 				21A8C7941E44C767008F923F /* Main.storyboard in Resources */,
+				218AA7CA1E4E9B04004BADC6 /* Game2.scn in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
