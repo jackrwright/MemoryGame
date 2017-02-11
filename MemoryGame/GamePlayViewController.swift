@@ -69,13 +69,13 @@ class GamePlayViewController: UIViewController {
 	
 	// MARK: - SceneKit Stuff
 	
-	func showCard(_ cardView: CardView, atDepth depth: CGFloat, afterDelay delay: TimeInterval, withDuration duration: TimeInterval)
+	private func showCard(_ cardView: CardView, atDepth depth: CGFloat, afterDelay delay: TimeInterval, withDuration duration: TimeInterval)
 	{
 		
 		// Create a card node and position it at the edge of the screen
 		
 		let theCardNode = CardNode(cardView)
-		theCardNode.isUserInteractionEnabled = true
+		theCardNode.isUserInteractionEnabled = false
 		let cardFrame = cardView.convert(cardView.bounds, to: nil)
 		
 		let screenRect = UIScreen.main.bounds
@@ -89,7 +89,6 @@ class GamePlayViewController: UIViewController {
 		originX = -(screenRect.size.width / 2.0)
 		originY = -(screenRect.size.height / 2.0 - 300.0 + 110.0)
 		let endPosition = SCNVector3.init(cardFrame.mid.x + originX, cardFrame.mid.y + originY, 0.0)
-//		print("End position = \(theCardNode.position)")
 		
 		// add it to the scene at the start position
 		theCardNode.position = startPosition
@@ -104,7 +103,6 @@ class GamePlayViewController: UIViewController {
 			SCNTransaction.animationTimingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseOut)
 			
 			theCardNode.position = endPosition
-//			print("End position = \(theCardNode.position)")
 			
 //			theCardNode.rotation = SCNVector4(x: 0.0, y: 0.0, z: 1.0, w: theCardNode.rotation.w + Float(M_PI * 2.0))
 
@@ -130,7 +128,6 @@ class GamePlayViewController: UIViewController {
 		if hitResults.count > 0 {
 			// retrieved the first clicked object
 			let result: AnyObject = hitResults[0]
-//			print(result.node)
 			if let cardNode = result.node as? CardNode, cardNode.isUserInteractionEnabled {
 				if let cardView = cardNode.myCardView {
 					// handle the tap

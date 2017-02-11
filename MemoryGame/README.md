@@ -1,6 +1,23 @@
 # Memory Game
 I wrote the app in Swift 3 and Xcode 8.2.1 with a deployment target of iOS 10.2.
-## The Components
+
+## Updated for SceneKit
+I decided to take advantage of UIStackView's auto-layout capabilities and use the resulting cell positions to position the card nodes in SceneKit. This turned out to be trickier than I had hoped, and it may have been simpler to just manually lay it out directly in SceneKit. Since this prototype was designed to demonstrate the visual attributes of SceneKit, I limited it to iPhone, portrait only.
+
+Once you get beyond the overhead of creating your 3D environment and assets, SceneKit gives you some things for free:
+* Realistic shadows and reflections.
+* Realistic movement and rotations.
+* Accurate perspective.
+* Realistic Physics (the cards tumble onto the floor at the end of the game).
+
+## Additional Components for SceneKit
+
+### Game2.scn
+This contains the environment for the game. It includes a wood floor, a brick wall for the background, lighting and the camera position.
+### CardNode.swift
+This is visual counterpart to CardView.swift. CardNode and CardView instances keep references to each other for managing game play.
+
+## The Common Components
 ### LobbyViewController.swift
 The UI was created in the storyboard and the only code is to pass the grid selection before the segueing to the GamePlayViewController. The view supports rotation and adapts to any device format.
 ### GamePlayViewController.swift

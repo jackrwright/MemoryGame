@@ -86,7 +86,7 @@ class CardView: UIButton {
 			// We're using SceneKit
 			
 			// rotate the card
-			node.rotate()
+			node.rotate(direction: 1.0)
 			
 		} else {
 			if let imageName = CardType.faceImageForType(myType) {
@@ -104,7 +104,7 @@ class CardView: UIButton {
 			// We're using SceneKit
 			
 			// rotate the card
-			node.rotate()
+			node.rotate(direction: -1.0)
 			
 		} else {
 			UIView.transition(with: self.imageView!, duration: 0.25, options: .transitionFlipFromLeft, animations: {
