@@ -23,7 +23,6 @@ class GamePlayViewController: UIViewController {
 	
 	private var myScene = SCNScene(named: "Game2.scn")!
 	private var boardNode: SCNNode!
-	private var pivotMatrix: SCNMatrix4!
 	private var numberOfCards: Int = 0
 	
 	@IBOutlet weak var stackView: UIStackView!
@@ -73,20 +72,51 @@ class GamePlayViewController: UIViewController {
 	func showCard(_ cardView: CardView, atDepth depth: CGFloat, afterDelay delay: TimeInterval, withDuration duration: TimeInterval)
 	{
 		
-		// Create a card node, position it off screen
+		// Create a card node and position it at the edge of the screen
 		
 		let theCardNode = CardNode(cardView)
 		theCardNode.isUserInteractionEnabled = true
 		let cardFrame = cardView.convert(cardView.bounds, to: nil)
 		
 		let screenRect = UIScreen.main.bounds
-		let originX = -(screenRect.size.width / 2.0)
-		let originY = -(screenRect.size.height / 2.0 - 300.0 + 110.0)
-
+		
+		// start position
+		var originX = CGFloat(0.0)
+		var originY = (screenRect.size.height - CardView.height * 0.7)
+		let startPosition = SCNVector3.init(originX, originY, depth)
+		
+		// end position
+		originX = -(screenRect.size.width / 2.0)
+		originY = -(screenRect.size.height / 2.0 - 300.0 + 110.0)
 		let endPosition = SCNVector3.init(cardFrame.mid.x + originX, cardFrame.mid.y + originY, 0.0)
-		theCardNode.position = endPosition
 		print("End position = \(theCardNode.position)")
+		
+		// add it to the scene at the start position
+		theCardNode.position = startPosition
 		self.myScene.rootNode.addChildNode(theCardNode)
+		
+		// Animate the card onto the scene after the given delay
+		Timer.scheduledTimer(withTimeInterval: delay, repeats: false, block: { (timer) in
+			
+			SCNTransaction.begin()
+			
+			SCNTransaction.animationDuration = duration
+			SCNTransaction.animationTimingFunction = CAMediaTimingFunction.init(name: kCAMediaTimingFunctionEaseOut)
+			
+			theCardNode.position = endPosition
+//			print("End position = \(theCardNode.position)")
+			
+			// enable user interaction when the animation is complete
+			SCNTransaction.completionBlock = (() -> Void)? {
+				
+				theCardNode.isUserInteractionEnabled = true
+				
+			}
+			
+			SCNTransaction.commit()
+			
+		}) // timer block
+
 	}
 	
 	func handleTap(_ gestureRecognize: UIGestureRecognizer) {
@@ -199,11 +229,6 @@ class GamePlayViewController: UIViewController {
 		// Now that the stack views have been layed out,
 		// cause the cards to animate into their positions from offscreen
 		
-		let screenRect = UIScreen.main.bounds
-		let originX = -(screenRect.size.width / 2.0)
-		let originY = screenRect.size.height / 2.0 - 300.0 + 110.0
-		pivotMatrix = SCNMatrix4Translate(SCNMatrix4Identity, Float(originX), Float(originY), 0.0)
-		
 		var delay = 0.0
 		let duration = 0.15
 		
@@ -272,12 +297,15 @@ class GamePlayViewController: UIViewController {
 		card.showFace()
 		if let previousCard = previousCardTapped {
 			if card.myType == previousCard.myType {
+				
 				// a match, disable user interaction with both cards
+				
 				card.isUserInteractionEnabled = false
 				previousCard.isUserInteractionEnabled = false
 				
 				previousCardTapped = nil
 				
+				// Detect the end of the game
 				numberOfCards -= 2
 				if numberOfCards <= 0 {
 					endGame()
@@ -305,7 +333,7 @@ class GamePlayViewController: UIViewController {
 	{
 		self.myScene.physicsWorld.gravity = SCNVector3.init(0.0, -9.8, 0.0)
 		
-		// apply a force to each cardNode
+		// Make each cardNode a physical object and apply a force to it
 		for view in stackView.arrangedSubviews {
 			if let horizontalStack = view as? UIStackView {
 				for view in horizontalStack.arrangedSubviews {
