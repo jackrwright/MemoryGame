@@ -38,7 +38,7 @@ class GamePlayViewController: UIViewController {
 			self.sceneView.scene = myScene
 			
 			// For debugging: allows the user to manipulate the camera
-			//			self.sceneView.allowsCameraControl = true
+//						self.sceneView.allowsCameraControl = true
 			
 			// add a tap gesture recognizer to handle card taps
 			let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
@@ -74,23 +74,48 @@ class GamePlayViewController: UIViewController {
 		
 		// Create a card node and position it at the edge of the screen
 		
-		let theCardNode = CardNode(cardView)
-		theCardNode.isUserInteractionEnabled = false
-		let cardFrame = cardView.convert(cardView.bounds, to: nil)
-		
 		let screenRect = UIScreen.main.bounds
 		
+		// it's good to crash if we don't have a camera
+		let camera = self.sceneView.pointOfView!.camera!
+		let cameraPosition = self.sceneView.pointOfView!.position
+		
+		// Compute the width and height in points of the visible plane at z = 0 (where the board is)
+		let distance = Double(cameraPosition.z)
+		let yFov = camera.yFov * M_PI / 180.0
+		let aspect = Double(screenRect.width / screenRect.height)
+		let height = 2.0 * tan(yFov / 2.0) * distance
+		let width = height * aspect
+		
+		let sceneBounds = CGRect(x: 0.0, y: 0.0, width: width, height: height)
+		let boardView = UIView(frame: sceneBounds)
+		
+		let sceneScale = CGFloat(width) / screenRect.width
+		
+		var cardFrame = cardView.convert(cardView.bounds, to: boardView)
+		
 		// start position
-		var originX = CGFloat(0.0)
-		var originY = (screenRect.size.height - CardView.height * 0.7)
+		let originX: CGFloat = 0.0
+		let originY: CGFloat = (sceneBounds.height / 2.0)
 		let startPosition = SCNVector3.init(originX, originY, depth)
 		
-		// end position
-		originX = -(screenRect.size.width / 2.0)
-		originY = -(screenRect.size.height / 2.0 - 300.0 + 110.0)
-		let endPosition = SCNVector3.init(cardFrame.mid.x + originX, cardFrame.mid.y + originY, 0.0)
+		// end position...
+		
+		// scale the card for the scene
+		let newOrigin = CGPoint(x: cardFrame.origin.x * sceneScale, y: cardFrame.origin.y * sceneScale)
+		let newSize = CGSize(width: cardFrame.size.width * sceneScale, height: cardFrame.size.height * sceneScale)
+		cardFrame = CGRect(origin: newOrigin, size: newSize)
 		
 		// add it to the scene at the start position
+		let theCardNode = CardNode(cardView, cardRect: cardFrame)
+		theCardNode.isUserInteractionEnabled = false
+		
+		// translate the card into the scene's coordinate space
+		let originOffsetX: CGFloat = -(sceneBounds.width / 2.0)
+		let originOffsetY: CGFloat = -(sceneBounds.height / 2.0) - 100.0 * sceneScale
+		
+		let endPosition = SCNVector3.init(cardFrame.mid.x + originOffsetX, cardFrame.mid.y + originOffsetY, -100.0)
+		
 		theCardNode.position = startPosition
 		self.myScene.rootNode.addChildNode(theCardNode)
 		

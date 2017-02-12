@@ -20,7 +20,7 @@ class CardNode: SCNNode {
 	
 	private var cubeNode: SCNNode!
 
-	required init(_ cardView: CardView) {
+	required init(_ cardView: CardView, cardRect: CGRect) {
 		
 		myCardView = cardView
 		
@@ -43,23 +43,17 @@ class CardNode: SCNNode {
 		cube.materials = [material_Back,  material_white, material_Face, material_white, material_white, material_white, material_white]
 		
 		self.geometry = cube
-
 		
-		// add a physical body
-		let physicsBody = SCNPhysicsBody(type: .dynamic, shape: nil)
-		physicsBody.mass = 0.0
-		self.physicsBody = physicsBody
-
-		// Adjust the size of the card image to aspect fit the CardView (which has been layed out by the UIStackView)
+		// Adjust the size of the card image to aspect fit the cardRect (which has been layed out by the UIStackView and scaled for the scene)
 		let imageRect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: CardView.width, height: CardView.height))
-		let adjustedRect = CGRect.aspectFitRect(imageRect, into: cardView.bounds)
+		let adjustedRect = CGRect.aspectFitRect(imageRect, into: cardRect)
 		
 		cardView.myNode = self
 		
 		self.myCardView = cardView
 		
 		// compute the scale based on the changed size
-		let scale: CGFloat = adjustedRect.width / CardView.width
+		let scale: CGFloat = adjustedRect.width / imageRect.width
 		
 //		print("card scale = \(scale)")
 		
