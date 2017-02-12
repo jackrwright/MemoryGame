@@ -20,7 +20,6 @@
 		21A8C7A81E4514F6008F923F /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C7A71E4514F6008F923F /* Extensions.swift */; };
 		21A8C7AD1E477E2D008F923F /* NonRotatingNavController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 21A8C7AC1E477E2D008F923F /* NonRotatingNavController.swift */; };
 		21FCA7E21E4ABD4200CCDBA7 /* art.scnassets in Resources */ = {isa = PBXBuildFile; fileRef = 21FCA7E11E4ABD4200CCDBA7 /* art.scnassets */; };
-		21FCA7E41E4AC17900CCDBA7 /* Game.scn in Resources */ = {isa = PBXBuildFile; fileRef = 21FCA7E31E4AC17900CCDBA7 /* Game.scn */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,7 +39,6 @@
 		21A8C7A91E469046008F923F /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		21A8C7AC1E477E2D008F923F /* NonRotatingNavController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NonRotatingNavController.swift; sourceTree = "<group>"; };
 		21FCA7E11E4ABD4200CCDBA7 /* art.scnassets */ = {isa = PBXFileReference; lastKnownFileType = wrapper.scnassets; path = art.scnassets; sourceTree = "<group>"; };
-		21FCA7E31E4AC17900CCDBA7 /* Game.scn */ = {isa = PBXFileReference; lastKnownFileType = file.bplist; path = Game.scn; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,7 +55,6 @@
 		219A03381E4A10A500064C37 /* SceneKit */ = {
 			isa = PBXGroup;
 			children = (
-				21FCA7E31E4AC17900CCDBA7 /* Game.scn */,
 				218AA7C91E4E9B04004BADC6 /* Game2.scn */,
 				219A033D1E4A2BAA00064C37 /* CardNode.swift */,
 				21FCA7E11E4ABD4200CCDBA7 /* art.scnassets */,
@@ -172,7 +169,6 @@
 				21FCA7E21E4ABD4200CCDBA7 /* art.scnassets in Resources */,
 				21A8C7991E44C767008F923F /* LaunchScreen.storyboard in Resources */,
 				21A8C7961E44C767008F923F /* Assets.xcassets in Resources */,
-				21FCA7E41E4AC17900CCDBA7 /* Game.scn in Resources */,
 				21A8C7941E44C767008F923F /* Main.storyboard in Resources */,
 				218AA7CA1E4E9B04004BADC6 /* Game2.scn in Resources */,
 			);
