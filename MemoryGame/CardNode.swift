@@ -65,14 +65,14 @@ class CardNode: SCNNode {
 		fatalError("init(coder:) has not been implemented")
 	}
 	
-	func rotate(direction: Float)
+	func rotate(direction: Double)
 	{
 		// rotate the card
 		
 		SCNTransaction.begin()
-		SCNTransaction.animationDuration = 0.33
+		SCNTransaction.animationDuration = 0.5
 		
-		self.rotation = SCNVector4(x: 0.0, y: direction, z: 0.0, w: self.rotation.w + Float(M_PI))
+		self.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: self.rotation.w + Float(M_PI * direction))
 		
 		SCNTransaction.commit()
 	}
