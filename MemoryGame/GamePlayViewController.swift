@@ -23,6 +23,10 @@ class GamePlayViewController: UIViewController {
 	
 	private var myScene = SCNScene(named: "Game2.scn")!
 	private var boardNode: SCNNode!
+	private var sceneBounds: CGRect!
+	private var sceneScale: CGFloat!
+	private var boardView: UIView!
+	
 	private var numberOfCards: Int = 0
 	
 	@IBOutlet weak var stackView: UIStackView!
@@ -43,6 +47,24 @@ class GamePlayViewController: UIViewController {
 			// add a tap gesture recognizer to handle card taps
 			let tapGesture = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
 			self.sceneView.addGestureRecognizer(tapGesture)
+			
+			let screenRect = UIScreen.main.bounds
+	
+			// it's good to crash if we don't have a camera
+			let camera = self.sceneView.pointOfView!.camera!
+			let cameraPosition = self.sceneView.pointOfView!.position
+	
+			// Compute the width and height in points of the visible plane at z = 0 (where the game board is)
+			let distance = Double(cameraPosition.z)
+			let yFov = camera.yFov * M_PI / 180.0
+			let aspect = Double(screenRect.width / screenRect.height)
+			let height = 2.0 * tan(yFov / 2.0) * distance
+			let width = height * aspect
+	
+			sceneBounds = CGRect(x: 0.0, y: 0.0, width: width, height: height)
+			boardView = UIView(frame: sceneBounds)
+	
+			sceneScale = CGFloat(width) / screenRect.width
 			
 			
 		} else {
@@ -74,37 +96,20 @@ class GamePlayViewController: UIViewController {
 		
 		// Create a card node and position it at the edge of the screen
 		
-		let screenRect = UIScreen.main.bounds
-		
-		// it's good to crash if we don't have a camera
-		let camera = self.sceneView.pointOfView!.camera!
-		let cameraPosition = self.sceneView.pointOfView!.position
-		
-		// Compute the width and height in points of the visible plane at z = 0 (where the board is)
-		let distance = Double(cameraPosition.z)
-		let yFov = camera.yFov * M_PI / 180.0
-		let aspect = Double(screenRect.width / screenRect.height)
-		let height = 2.0 * tan(yFov / 2.0) * distance
-		let width = height * aspect
-		
-		let sceneBounds = CGRect(x: 0.0, y: 0.0, width: width, height: height)
-		let boardView = UIView(frame: sceneBounds)
-		
-		let sceneScale = CGFloat(width) / screenRect.width
-		
 		var cardFrame = cardView.convert(cardView.bounds, to: boardView)
-		
-		// start position
-		let originX: CGFloat = 0.0
-		let originY: CGFloat = (sceneBounds.height / 2.0)
-		let startPosition = SCNVector3.init(originX, originY, depth)
-		
-		// end position...
 		
 		// scale the card for the scene
 		let newOrigin = CGPoint(x: cardFrame.origin.x * sceneScale, y: cardFrame.origin.y * sceneScale)
 		let newSize = CGSize(width: cardFrame.size.width * sceneScale, height: cardFrame.size.height * sceneScale)
 		cardFrame = CGRect(origin: newOrigin, size: newSize)
+		
+		// start position...
+		
+		let originX: CGFloat = 0.0
+		let originY: CGFloat = (sceneBounds.height / 2.0) + cardFrame.size.height / 2.0 - 150.0
+		let startPosition = SCNVector3.init(originX, originY, depth)
+		
+		// end position...
 		
 		// add it to the scene at the start position
 		let theCardNode = CardNode(cardView, cardRect: cardFrame)
@@ -129,13 +134,10 @@ class GamePlayViewController: UIViewController {
 			
 			theCardNode.position = endPosition
 			
-//			theCardNode.rotation = SCNVector4(x: 0.0, y: 0.0, z: 1.0, w: theCardNode.rotation.w + Float(M_PI * 2.0))
-
 			// enable user interaction when the animation is complete
 			SCNTransaction.completionBlock = (() -> Void)? {
 				
 				theCardNode.isUserInteractionEnabled = true
-				
 			}
 			
 			SCNTransaction.commit()
