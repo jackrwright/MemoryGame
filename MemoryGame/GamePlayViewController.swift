@@ -37,6 +37,9 @@ class GamePlayViewController: UIViewController {
 	override func viewDidLoad() {
 		
 		if useSceneKit {
+			// Leave this visible to debug card placement in the scene vs. cell placement in the UIStackView.
+			// You can use the Xcode view debugging tool.
+			// But, it must be hidden to allow the user to tap the cards.
 			self.stackView.isHidden = true
 			
 			self.sceneView.scene = myScene
@@ -357,7 +360,9 @@ class GamePlayViewController: UIViewController {
 	
 	func endGame()
 	{
-		self.myScene.physicsWorld.gravity = SCNVector3.init(0.0, -9.8, 0.0)
+		let m: Float = 2.0
+		
+		self.myScene.physicsWorld.gravity = SCNVector3.init(0.0, -98.0, 0.0)
 		
 		// Make each cardNode a physical object and apply a force to it
 		for view in stackView.arrangedSubviews {
@@ -367,11 +372,18 @@ class GamePlayViewController: UIViewController {
 						if let node = cardView.myNode {
 							node.makePhysical()
 							if let body = node.physicsBody {
-								let randomX = Float.random(min: -10, max: 10)
-								let randomY = Float.random(min: 10, max: 18)
-								let randomZ = Float.random(min: -10, max: 18)
+								var randomX = Float.random(min: -10, max: 10) * m
+								let randomY = Float.random(min: 10, max: 18) * m
+								let randomZ = Float.random(min: -10, max: 18) * m
 								let force = SCNVector3(x: randomX, y: randomY , z: randomZ)
-								body.applyForce(force, asImpulse: true)
+								
+								// create an offset from the card's center of mass for the application of the force so the card spins a bit
+								randomX = Float.random(min: -10.0, max: 10.0)
+								let randomPosition = SCNVector3(x: randomX * m, y: 0.0, z: 0.0)
+								
+								body.applyForce(force, at: randomPosition, asImpulse: true)
+								
+//								body.applyForce(force, asImpulse: true)
 							}
 
 						}

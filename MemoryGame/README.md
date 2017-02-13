@@ -2,7 +2,7 @@
 I wrote the app in Swift 3 and Xcode 8.2.1 with a deployment target of iOS 10.2.
 
 ## Updated for SceneKit
-I decided to take advantage of UIStackView's auto-layout capabilities and use the resulting cell positions to position the card nodes in SceneKit. This turned out to be trickier than I had hoped, and it may have been simpler to just manually lay it out directly in SceneKit. Since this prototype was designed to demonstrate the visual attributes of SceneKit, I limited it to iPhone, portrait only.
+Since this is essentially a game played on a 2-dimensional board, I decided to take advantage of UIStackView's auto-layout capabilities and use the resulting cell positions to position the card nodes in SceneKit.
 
 Once you get beyond the overhead of creating your 3D environment and assets, SceneKit gives you some things for free:
 * Realistic shadows and reflections.
@@ -13,7 +13,7 @@ Once you get beyond the overhead of creating your 3D environment and assets, Sce
 ## Additional Components for SceneKit
 
 ### Game2.scn
-This contains the environment for the game. It includes a wood floor, a brick wall for the background, lighting and the camera position.
+This contains the environment for the game. It includes a wood floor, a brick wall for the background, lighting and the camera position. To simplify the placement of cards, I used UIView points as the dimensional units in the scene. I then only needed to transform the card position from the UIStackView into the equivalent position in the scene.
 ### CardNode.swift
 This is visual counterpart to CardView.swift. CardNode and CardView instances keep references to each other for managing game play.
 

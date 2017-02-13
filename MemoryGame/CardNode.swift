@@ -16,7 +16,7 @@ class CardNode: SCNNode {
 	
 	var isUserInteractionEnabled: Bool = false
 	
-	static let depth: CGFloat = 5.0
+	static let depth: CGFloat = 1.0
 	
 	private var cubeNode: SCNNode!
 
@@ -25,24 +25,6 @@ class CardNode: SCNNode {
 		myCardView = cardView
 		
 		super.init()
-		
-		// create a cube node to represent the card
-		let cube = SCNBox(width: CardView.width, height: CardView.height, length: CardNode.depth, chamferRadius: 5)
-
-		let material_white = SCNMaterial()
-		material_white.diffuse.contents = UIColor.init(white: 0.8, alpha: 1.0)
-
-		let material_Back = SCNMaterial()
-		material_Back.diffuse.contents = UIImage(named: "CardBack")
-		
-		let material_Face = SCNMaterial()
-		if let imageName = CardType.faceImageForType((myCardView.myType)) {
-			material_Face.diffuse.contents = UIImage(named: imageName)
-		}
-		
-		cube.materials = [material_Back,  material_white, material_Face, material_white, material_white, material_white, material_white]
-		
-		self.geometry = cube
 		
 		// Adjust the size of the card image to aspect fit the cardRect (which has been layed out by the UIStackView and scaled for the scene)
 		let imageRect = CGRect(origin: CGPoint(x: 0, y: 0), size: CGSize(width: CardView.width, height: CardView.height))
@@ -58,6 +40,24 @@ class CardNode: SCNNode {
 //		print("card scale = \(scale)")
 		
 		self.scale = SCNVector3.init(x: Float(scale), y: Float(scale), z: Float(scale))
+		
+		// create a cube node to represent the card
+		let cube = SCNBox(width: CardView.width, height: CardView.height, length: CardNode.depth * scale, chamferRadius: CardNode.depth * scale)
+		
+		let material_white = SCNMaterial()
+		material_white.diffuse.contents = UIColor.init(white: 0.8, alpha: 1.0)
+		
+		let material_Back = SCNMaterial()
+		material_Back.diffuse.contents = UIImage(named: "CardBack")
+		
+		let material_Face = SCNMaterial()
+		if let imageName = CardType.faceImageForType((myCardView.myType)) {
+			material_Face.diffuse.contents = UIImage(named: imageName)
+		}
+		
+		cube.materials = [material_Back,  material_white, material_Face, material_white, material_white, material_white, material_white]
+		
+		self.geometry = cube
 		
 	}
 	
