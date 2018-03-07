@@ -72,7 +72,7 @@ class CardNode: SCNNode {
 		SCNTransaction.begin()
 		SCNTransaction.animationDuration = 0.5
 		
-		self.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: self.rotation.w + Float(M_PI * direction))
+		self.rotation = SCNVector4(x: 0.0, y: 1.0, z: 0.0, w: self.rotation.w + Float(.pi * direction))
 		
 		SCNTransaction.commit()
 	}

@@ -59,7 +59,7 @@ class GamePlayViewController: UIViewController {
 	
 			// Compute the width and height in points of the visible plane at z = 0 (where the game board is)
 			let distance = Double(cameraPosition.z)
-			let yFov = camera.yFov * M_PI / 180.0
+			let yFov = camera.yFov * .pi / 180.0
 			let aspect = Double(screenRect.width / screenRect.height)
 			let height = 2.0 * tan(yFov / 2.0) * distance
 			let width = height * aspect
