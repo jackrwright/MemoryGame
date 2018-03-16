@@ -65,6 +65,7 @@
 		21A8C7821E44C767008F923F = {
 			isa = PBXGroup;
 			children = (
+				21A8C7A91E469046008F923F /* README.md */,
 				21A8C78D1E44C767008F923F /* MemoryGame */,
 				21A8C78C1E44C767008F923F /* Products */,
 			);
@@ -81,7 +82,6 @@
 		21A8C78D1E44C767008F923F /* MemoryGame */ = {
 			isa = PBXGroup;
 			children = (
-				21A8C7A91E469046008F923F /* README.md */,
 				21A8C78E1E44C767008F923F /* AppDelegate.swift */,
 				21A8C7901E44C767008F923F /* LobbyViewController.swift */,
 				21A8C7A11E44D3CC008F923F /* GamePlayViewController.swift */,
