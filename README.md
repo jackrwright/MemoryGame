@@ -19,7 +19,7 @@ This is visual counterpart to CardView.swift. CardNode and CardView instances ke
 
 ## The Common Components
 ### LobbyViewController.swift
-The UI was created in the storyboard and the only code is to pass the grid selection before the segueing to the GamePlayViewController. The view supports rotation and adapts to any device format.
+The UI was created in the storyboard and the only code is to pass the grid selection before segueing to the GamePlayViewController. The view supports rotation and adapts to any device format.
 ### GamePlayViewController.swift
 This controller manages the game play. The only parts of its view that are created in the storyboard are the back button and an empty vertical UIStackView as a placeholder. The rest of it is generated in the controller. I chose to do it this way for flexibility. To add a new grid option only requires adding a button to the Lobby view controller in the storyboard, a segue with an appropriate identifier and tweaking a few constants in code.
 #### CardView.swift
