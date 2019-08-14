@@ -37,9 +37,6 @@ When the user chooses a grid option in the Lobby, the LobbyViewController passes
  The card tap logic is handled by the *cardWasTapped()* function.
 
  ## Observations/ Comments
- * The instructions said there would be 10 images for the card faces, but I could only find 8 unique images, so some faces are duplicated in the game.
- * Some of the images had no border, so I added a shadow effect to make the card shapes more distinct.
- * Even though not required, I added a few animations:
 1. **Card Flip Animation**
 
     The **CardView** class contains *showFace()* and *showBack()* functions to flip the cards. They use the standard *UIView.transition()* class function to flip the cards between the card back and the face.
